@@ -27,6 +27,7 @@ CREATE TABLE `user` (
   `nickname` varchar(45) DEFAULT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
+  `role` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
@@ -40,7 +41,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'袁炀','yy417168602','yy417168602');
+INSERT INTO `user` VALUES (1,'Rio','admin','admin','admin');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-11 21:00:38
+-- Dump completed on 2018-04-04 11:15:19
