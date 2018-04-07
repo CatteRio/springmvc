@@ -3,6 +3,7 @@ package com.yy.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -12,10 +13,15 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/admin")
 public class IndexController {
-	
+
 	@RequestMapping("/login.do")
 	public ModelAndView login(Model model) {
 		return new ModelAndView("login");
+	}
+
+	@RequestMapping(value = "/register.do", method = RequestMethod.GET)
+	public ModelAndView register(Model model) {
+		return new ModelAndView("register");
 	}
 
 	@RequestMapping("/index.do")
@@ -27,6 +33,7 @@ public class IndexController {
 	public ModelAndView showUserInformation(Model model) {
 		return new ModelAndView("/userinfo/userinfo");
 	}
+
 	@RequestMapping("/modifyinfo.do")
 	public ModelAndView modifyInfo(Model model) {
 		return new ModelAndView("/userinfo/modifyinfo");

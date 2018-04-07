@@ -8,10 +8,12 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yy.pojo.User;
 import com.yy.service.IUserService;
+import com.yy.utils.CommonUtils;
 
 /**
  * @author Rio
@@ -37,7 +39,8 @@ public class ShiroRealm extends AuthorizingRealm {
 		if (user == null)
 			return null; // 异常处理，找不到数据
 		String realmName = this.getName();
-		return new SimpleAuthenticationInfo(user, user.getPassword(), realmName);
+		ByteSource credentialsSalt = ByteSource.Util.bytes(user.getSalt());
+		return new SimpleAuthenticationInfo(user,user.getPassword(), credentialsSalt, realmName);
 	}
 
 }
