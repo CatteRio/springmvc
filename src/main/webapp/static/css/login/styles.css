@@ -56,13 +56,13 @@ body :-ms-input-placeholder {
 	overflow: hidden;
 }
 
-.wrapper.form-success .container h1 {
+.wrapper.form-success .main h1 {
 	-webkit-transform: translateY(85px);
 	-ms-transform: translateY(85px);
 	transform: translateY(85px);
 }
 
-.container {
+.main {
 	text-align: center;
 	position: absolute;
 	width: 500px;
@@ -74,7 +74,7 @@ body :-ms-input-placeholder {
 	box-shadow: 0 0 70px 1px #00d0ff80;
 }
 
-.container h1 {
+.main h1 {
 	font-size: 40px;
 	-webkit-transition-duration: 1s;
 	transition-duration: 1s;

@@ -7,17 +7,18 @@
 		<!-- 装配 securityManager -->
 		<property name="securityManager" ref="securityManager" />
 		<!-- 配置登陆页面 -->
-		<property name="loginUrl" value="/admin/login.do" />
+		<property name="loginUrl" value="/login/login.do" />
 		<property name="unauthorizedUrl" value="/admin/index.do" />
 
 		<!-- 具体配置需要拦截哪些 URL, 以及访问对应的 URL 时使用 Shiro 的什么 Filter 进行拦截. -->
 		<property name="filterChainDefinitions">
 			<value>
-				/admin/login*.do=anon
-				/admin/register*.do=anon
+				/static/**=anon
+				/login*.do=anon
+				/api/login.do=anon
+				/captcha.do=anon
 				/admin/logout.do=logout
-				/admin/*=user
-				/user/*=user
+				/**=user
 			</value>
 		</property>
 	</bean>

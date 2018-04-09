@@ -28,5 +28,7 @@
 		role= #{role} 
 		where id = #{id}
 	</update>
-
+	<select id="getUserListByLimit" resultType="User">
+        select user.id,user.userName,user.nickname,user.role,user.mobile,user.email from user
+    </select>
 </mapper>  

@@ -1,11 +1,14 @@
 package com.yy.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yy.mapper.UserMapper;
 import com.yy.pojo.User;
 import com.yy.service.IUserService;
+import com.yy.utils.PageInfo;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -24,5 +27,10 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void updateUser(User user) {
 		userDAO.update(user);
+	}
+
+	@Override
+	public List<User> getUserListByLimit(PageInfo page) {
+		return userDAO.getUserListByLimit(page);
 	}
 }

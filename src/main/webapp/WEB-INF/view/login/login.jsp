@@ -8,14 +8,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>后台登录中心</title>
-<%@include file="common/header.jsp"%>
+<%@include file="../common/header.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/css/login/styles.css">
 </head>
 <body>
 	<div class="htmleaf-container">
 		<div class="wrapper">
-			<div class="container">
+			<div class="main">
 				<h1>LarryMS管理系统</h1>
 				<h2 class="loginh">后台登录中心</h2>
 				<img class="logimg"
@@ -83,12 +83,12 @@
 			$('#pwdinput').val($.md5(pwd));
 			$.ajax({
 				type : "POST",
-				url : "loginProcess.do",
+				url : baseApiPath + "/login.do",
 				data : $('#loginForm').serialize(),
 				success : function(data) {
 					console.log(data);
 					if (data.code == 200) {
-						window.location.href = "index.do";
+						window.location.href = basePath + "/index.do";
 					} else {
 						var id = "";
 						if (data.message == "用户不存在")

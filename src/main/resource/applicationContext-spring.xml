@@ -2,8 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:task="http://www.springframework.org/schema/task"  
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans  
                         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
                         http://www.springframework.org/schema/context  
@@ -23,6 +22,9 @@
 	</bean>
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation">
+			<value>classpath:mybaits-config.xml</value>
+		</property>
 		<!-- 别名包，等同于mybatis配置文件conf.xml中的typeAliases，简化映射文件.xml中类的引用 -->
 		<property name="typeAliasesPackage" value="com.yy.pojo"></property>
 	</bean>
@@ -36,11 +38,13 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	
-	<task:annotation-driven scheduler="qbScheduler" mode="proxy" />
+
+	<task:annotation-driven scheduler="qbScheduler"
+		mode="proxy" />
 	<task:scheduler id="qbScheduler" pool-size="10" />
-	<context:annotation-config/>  
-    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
+	<context:annotation-config />
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 	<context:component-scan base-package="com" />
-	
+
 </beans>
