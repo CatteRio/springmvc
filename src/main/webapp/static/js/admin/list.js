@@ -5,7 +5,7 @@
 layui.use('table', function() {
 	var table = layui.table;
 	// 第一个实例
-	table.render({
+	var tableins = table.render({
 		elem : '#laytable',
 		height : 500,
 		url : baseApiPath + '/user/list.do', // 数据接口
@@ -19,6 +19,8 @@ layui.use('table', function() {
 		page : true, // 开启分页
 		cols : [ [ // 表头
 		{
+			type : 'checkbox'
+		}, {
 			field : 'id',
 			title : 'ID',
 			sort : true,
@@ -38,7 +40,29 @@ layui.use('table', function() {
 		}, {
 			field : 'email',
 			title : '邮箱地址'
+		}, {
+			fixed : 'right',
+			width : 150,
+			align : 'center',
+			toolbar : '#barDemo'
 		} ] ]
 	});
+	// 监听工具条
+	table.on('tool(maintable)', function(obj) {
+		var data = obj.data; // 获得当前行数据
+		var layEvent = obj.event;
+		var tr = obj.tr; // 获得当前行 tr 的DOM对象
 
+		if (layEvent === 'detail') { // 查看
+
+		} else if (layEvent === 'del') { // 删除
+			layer.confirm('真的删除行么', function(index) {
+				tableins.reload();
+
+				layer.close(index);
+			});
+		} else if (layEvent === 'edit') { // 编辑
+
+		}
+	});
 });

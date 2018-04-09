@@ -46,11 +46,22 @@
 			</button>
 			<span class="fr" style="line-height: 40px">共有数据：88 条</span>
 		</div>
-		<table id="laytable">
+		<table id="laytable" lay-filter="maintable">
 		</table>
+
 	</div>
-		<script
+	<div id="barCheck" type="text/html" style="display: none">
+		<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+	</div>
+	<div id="barDemo" type="text/html" style="display: none">
+		<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a> <a
+			class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> <a
+			class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+	</div>
+
+	<script
 		src="${pageContext.request.contextPath}/static/js/admin/list.js"></script>
+
 </body>
 
 </html>
