@@ -30,7 +30,17 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public List<User> getUserListByLimit(PageInfo page) {
-		return userDAO.getUserListByLimit(page);
+	public List<User> getUserListByLimit(PageInfo page,String username) {
+		return userDAO.getUserListByLimit(page,username);
+	}
+
+	@Override
+	public void deleteUser(User user) {
+		userDAO.delete(user);
+	}
+
+	@Override
+	public void deleteUserList(List<User> userList) {
+		userDAO.deleteUserList(userList);
 	}
 }

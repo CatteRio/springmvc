@@ -1,9 +1,4 @@
 @charset "utf-8";
-@import "../common/layui/css/layui.css";
-* {
-  margin: 0px;
-  padding: 0px;
-}
 a {
   text-decoration: none;
 }
@@ -619,3 +614,4 @@ table td {
 .weadmin-notice .layui-carousel-ind ul li.layui-this {
   background-color: #999;
 }
+.layui-table-cell .layui-form-checkbox[lay-skin="primary"]{top: 50%;transform: translateY(-50%);}

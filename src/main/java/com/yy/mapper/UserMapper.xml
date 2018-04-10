@@ -22,13 +22,29 @@
 	</delete>
 	<update id="update" parameterType="User">
 		update user set
-		nickname= #{nickname},
+		nickname=
+		#{nickname},
 		username= #{username},
 		password= #{password},
-		role= #{role} 
+		role= #{role}
 		where id = #{id}
 	</update>
 	<select id="getUserListByLimit" resultType="User">
-        select user.id,user.userName,user.nickname,user.role,user.mobile,user.email from user
-    </select>
+		select
+		user.id,user.userName,user.nickname,user.role,user.mobile,user.email
+		from user
+		where id != 1
+		<if test='username != null'>
+			and userName like '%${username}%'
+		</if>
+	</select>
+
+	<delete id="deleteUserList" parameterType="java.util.List">
+		delete from user
+		where id in
+		<foreach item="id" collection="list" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
 </mapper>  

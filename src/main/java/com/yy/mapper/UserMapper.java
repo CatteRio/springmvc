@@ -20,5 +20,8 @@ public interface UserMapper {
 
 	List<User> findAll();
 	
-	List<User> getUserListByLimit(@Param("page") PageInfo page);
+	List<User> getUserListByLimit(@Param("page") PageInfo page,@Param("username") String username);
+
+	void deleteUserList(List<User> userList);
+
 }

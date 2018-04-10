@@ -12,5 +12,7 @@ public interface IUserService {
 	void saveUser(User user);
 	void updateUser(User user);
 	User findUserByUserName(String username);
-	List<User> getUserListByLimit(PageInfo page);
+	List<User> getUserListByLimit(PageInfo page,String username);
+	void deleteUser(User user);
+	void deleteUserList(List<User> userList);
 }

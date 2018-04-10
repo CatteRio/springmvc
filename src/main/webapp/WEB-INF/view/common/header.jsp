@@ -6,7 +6,7 @@
 <script src="${pageContext.request.contextPath}/static/common/vue/vue.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/common/layui/css/layui.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/font.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/weadmin.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/my.css">
 <script>
 	var currentUser = {
 		username:"<shiro:principal property="username"/>",

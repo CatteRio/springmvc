@@ -1,8 +1,8 @@
 package com.yy.controller;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 
-import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -11,23 +11,18 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.yy.mapper.UserMapper;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import com.yy.pojo.User;
 import com.yy.service.IUserService;
-import com.yy.service.impl.UserServiceImpl;
-import com.yy.utils.CommonUtils;
 import com.yy.utils.PageInfo;
 import com.yy.utils.PageReply;
 import com.yy.utils.Reply;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class LoginController {
 
@@ -35,7 +30,6 @@ public class LoginController {
 	private IUserService userService;
 	
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-	@ResponseBody
 	public Reply loginProcess(User user, String captcha, Model model, HttpSession session) {
 		String sessionCaptcha = (String) session.getAttribute("captcha");
 		if (sessionCaptcha == null || !sessionCaptcha.toLowerCase().equals(captcha.toLowerCase())) {
@@ -69,8 +63,7 @@ public class LoginController {
 	}
 
 	@RequestMapping("/user/list.do")
-	@ResponseBody
-	public PageReply getUserList(int page, int limit) {
+	public PageReply getUserList(int page, int limit,String username) {
 		PageInfo pageInfo = new PageInfo();
         if (page <= 0) {
         	page = 1;
@@ -78,8 +71,21 @@ public class LoginController {
         int currentResult = (page - 1) * limit;
 		pageInfo.setCurrentResult(currentResult);
 		pageInfo.setShowCount(limit);
-		List<User> userList = userService.getUserListByLimit(pageInfo);
+		List<User> userList = userService.getUserListByLimit(pageInfo,username);
 		return PageReply.ok(pageInfo.getTotalResult(), userList);
 	}
-
+	@RequestMapping("/user/delete.do")
+	public Reply deleteUser(User user) {
+		if(user.getRole().equals("superadmin")) {
+			return Reply.error("无法删除超级管理员");
+		}
+		userService.deleteUser(user);
+		return Reply.ok("删除成功");
+	}
+	
+	@RequestMapping("/user/deletelist.do")
+	public Reply deleteUserList(@RequestParam("users") List<User> users) {
+		userService.deleteUserList(users);
+		return Reply.ok("删除成功");
+	}
 }

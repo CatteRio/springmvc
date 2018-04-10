@@ -5,63 +5,125 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+<title>用户管理-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
 <%@include file="../common/header.jsp"%>
 </head>
 
 <body>
-	<div class="weadmin-nav">
-		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">管理员管理</a>
-			<a> <cite>管理员列表</cite></a>
-		</span> <a class="layui-btn layui-btn-sm"
-			style="line-height: 1.6em; margin-top: 3px; float: right"
-			href="javascript:location.replace(location.href);" title="刷新"> <i
-			class="layui-icon" style="line-height: 30px">ဂ</i></a>
-	</div>
-	<div class="weadmin-body">
-		<div class="layui-row">
-			<form class="layui-form layui-col-md12 we-search">
-				<div class="layui-inline">
-					<input class="layui-input" placeholder="开始日" name="start"
-						id="start">
+	<div id="vcontroller">
+		<!-- 查看用户 -->
+		<div class="weadmin-body" v-show="showList">
+			<fieldset class="layui-elem-field">
+				<legend>查看用户</legend>
+				<div class="layui-field-box">
+					<div class="weadmin-block">
+						<div class="layui-inline">
+							<input type="text" v-model="selectInput" placeholder="请输入用户名" @keyup="selectUser()"
+								autocomplete="off" class="layui-input">
+						</div>
+						<button class="layui-btn" lay-submit="" lay-filter="sreach">
+							<i class="layui-icon">&#xe615;</i>
+						</button>
+						<button class="layui-btn layui-btn-danger" @click="deleteSelect()">
+							<i class="layui-icon"></i>批量删除
+						</button>
+						<button class="layui-btn" @click="showAddView()">
+							<i class="layui-icon"></i>添加
+						</button>
+					</div>
+					<table id="laytable" lay-filter="maintable">
+					</table>
+					<div id="barDemo" style="display: none">
+						<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a> <a
+							class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> <a
+							class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+					</div>
 				</div>
-				<div class="layui-inline">
-					<input class="layui-input" placeholder="截止日" name="end" id="end">
-				</div>
-				<div class="layui-inline">
-					<input type="text" name="username" placeholder="请输入用户名"
-						autocomplete="off" class="layui-input">
-				</div>
-				<button class="layui-btn" lay-submit="" lay-filter="sreach">
-					<i class="layui-icon">&#xe615;</i>
-				</button>
-			</form>
+			</fieldset>
 		</div>
-		<div class="weadmin-block">
-			<button class="layui-btn layui-btn-danger" onclick="delAll()">
-				<i class="layui-icon"></i>批量删除
-			</button>
-			<button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html')">
-				<i class="layui-icon"></i>添加
-			</button>
-			<span class="fr" style="line-height: 40px">共有数据：88 条</span>
+		<!-- 增加用户 -->
+		<div class="weadmin-body" v-show="showAdd">
+			<fieldset class="layui-elem-field">
+				<legend>新增用户</legend>
+				<div class="layui-field-box">
+					<div class="layui-form">
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label"> <span
+								class="we-red">*</span>登录名
+							</label>
+							<div class="layui-input-inline">
+								<input type="text" id="username" name="username" required=""
+									lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<span class="we-red">*</span>将会成为您唯一的登入名
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="phone" class="layui-form-label"> <span
+								class="we-red">*</span>手机
+							</label>
+							<div class="layui-input-inline">
+								<input type="text" id="phone" name="phone" required=""
+									lay-verify="phone" autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<span class="we-red">*</span>将会成为您唯一的登入名
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="L_email" class="layui-form-label"> <span
+								class="we-red">*</span>邮箱
+							</label>
+							<div class="layui-input-inline">
+								<input type="text" id="L_email" name="email" required=""
+									lay-verify="email" autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<span class="we-red">*</span>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span class="we-red">*</span>角色</label>
+							<div class="layui-input-block">
+								<input type="checkbox" name="like1[write]" lay-skin="primary"
+									title="超级管理员" checked=""> <input type="checkbox"
+									name="like1[read]" lay-skin="primary" title="编辑人员"> <input
+									type="checkbox" name="like1[write]" lay-skin="primary"
+									title="宣传人员" checked="">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="L_pass" class="layui-form-label"> <span
+								class="we-red">*</span>密码
+							</label>
+							<div class="layui-input-inline">
+								<input type="password" id="L_pass" name="pass" required=""
+									lay-verify="pass" autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">6到16个字符</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="L_repass" class="layui-form-label"> <span
+								class="we-red">*</span>确认密码
+							</label>
+							<div class="layui-input-inline">
+								<input type="password" id="L_repass" name="repass" required=""
+									lay-verify="repass" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="L_repass" class="layui-form-label"></label>
+							<button class="layui-btn" lay-submit="">增加</button>
+							<button class="layui-btn layui-btn-warm" @click="showListView()">返回</button>
+						</div>
+					</div>
+				</div>
+			</fieldset>
 		</div>
-		<table id="laytable" lay-filter="maintable">
-		</table>
-
 	</div>
-	<div id="barCheck" type="text/html" style="display: none">
-		<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
-	</div>
-	<div id="barDemo" type="text/html" style="display: none">
-		<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a> <a
-			class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> <a
-			class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-	</div>
-
 	<script
 		src="${pageContext.request.contextPath}/static/js/admin/list.js"></script>
-
 </body>
 
 </html>
