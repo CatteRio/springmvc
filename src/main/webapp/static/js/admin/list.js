@@ -108,16 +108,19 @@ var vm = new Vue({
 				$.ajax({
 					type : "post",
 					url : baseApiPath + "/user/deletelist.do",
-					data : {"users":checkStatus.data},
+					data : JSON.stringify(checkStatus.data),
+					contentType: 'application/json',
 					success : function(data) {
 						alert(data.message);
 						tableins.reload();
+					},
+					error : function(data) {
+						alert(data.message);
 					}
 				});
 				layer.close(index);
 			});
-			
-			
+
 			console.log(checkStatus);
 		}
 	}

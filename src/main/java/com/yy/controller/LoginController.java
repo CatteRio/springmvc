@@ -12,6 +12,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,7 +85,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping("/user/deletelist.do")
-	public Reply deleteUserList(@RequestParam("users") List<User> users) {
+	public Reply deleteUserList(@RequestBody List<User> users) {
 		userService.deleteUserList(users);
 		return Reply.ok("删除成功");
 	}

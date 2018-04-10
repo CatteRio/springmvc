@@ -31,7 +31,8 @@
 	</update>
 	<select id="getUserListByLimit" resultType="User">
 		select
-		user.id,user.userName,user.nickname,user.role,user.mobile,user.email
+		user.i
+		d,user.userName,user.nickname,user.role,user.mobile,user.email
 		from user
 		where id != 1
 		<if test='username != null'>
@@ -42,9 +43,9 @@
 	<delete id="deleteUserList" parameterType="java.util.List">
 		delete from user
 		where id in
-		<foreach item="id" collection="list" open="(" close=")"
+		<foreach item="param" collection="list" open="(" close=")"
 			separator=",">
-			#{id}
+			#{param.id}
 		</foreach>
 	</delete>
 </mapper>  
