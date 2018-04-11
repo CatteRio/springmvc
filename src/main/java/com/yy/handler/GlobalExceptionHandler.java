@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import com.yy.utils.Reply;
 
@@ -19,7 +20,12 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public Reply handleException(Exception e) {
 		e.printStackTrace();
-		return Reply.error("未知异常，请联系管理员！");
+		try {
+			throw e;
+		} catch (UnauthorizedException e2) {
+			return Reply.error("没有权限访问");
+		} catch (Exception e1) {
+			return Reply.error("未知异常，请联系管理员！");
+		}
 	}
-
 }

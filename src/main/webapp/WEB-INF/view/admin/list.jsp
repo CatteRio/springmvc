@@ -18,8 +18,8 @@
 				<div class="layui-field-box">
 					<div class="weadmin-block">
 						<div class="layui-inline">
-							<input type="text" v-model="selectInput" placeholder="请输入用户名" @keyup="selectUser()"
-								autocomplete="off" class="layui-input">
+							<input type="text" v-model="selectInput" placeholder="请输入用户名"
+								@keyup="selectUser()" autocomplete="off" class="layui-input">
 						</div>
 						<button class="layui-btn" lay-submit="" lay-filter="sreach">
 							<i class="layui-icon">&#xe615;</i>
@@ -34,8 +34,7 @@
 					<table id="laytable" lay-filter="maintable">
 					</table>
 					<div id="barDemo" style="display: none">
-						<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a> <a
-							class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> <a
+						<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> <a
 							class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 					</div>
 				</div>
@@ -71,8 +70,8 @@
 								<span class="we-red">*</span>
 							</div>
 						</div>
-						
-						
+
+
 						<div class="layui-form-item">
 							<label for="phone" class="layui-form-label"> <span
 								class="we-red">*</span>手机
@@ -135,6 +134,78 @@
 				</div>
 			</fieldset>
 		</div>
+
+
+		<!-- 编辑用户 -->
+		<div class="weadmin-body" v-show="showEdit">
+			<fieldset class="layui-elem-field">
+				<legend>编辑用户</legend>
+				<div class="layui-field-box">
+					<div class="layui-form">
+						<input type="text" style="display: none" name="username"
+							v-model="user.id" readonly="readonly">
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">用户名 </label>
+							<div class="layui-input-inline">
+								<input v-model="user.username" type="text" name="username"
+									required="" lay-verify="required" autocomplete="off"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="nickname" class="layui-form-label">昵称 </label>
+							<div class="layui-input-inline">
+								<input v-model="user.nickname" type="text" name="nickname"
+									required="" lay-verify="required" autocomplete="off"
+									class="layui-input">
+							</div>
+						</div>
+
+
+						<div class="layui-form-item">
+							<label for="phone" class="layui-form-label">手机 </label>
+							<div class="layui-input-inline">
+								<input v-model="user.mobile" type="text" name="mobile"
+									required="" lay-verify="phone" autocomplete="off"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="L_email" class="layui-form-label">邮箱 </label>
+							<div class="layui-input-inline">
+								<input v-model="user.email" type="text" name="email" required=""
+									lay-verify="email" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<!-- <div class="layui-form-item">
+							<label class="layui-form-label"><span class="we-red">*</span>角色</label>
+							<div class="layui-input-block">
+								<input type="checkbox" name="like1[write]" lay-skin="primary"
+									title="超级管理员" checked=""> <input type="checkbox"
+									name="like1[read]" lay-skin="primary" title="编辑人员"> <input
+									type="checkbox" name="like1[write]" lay-skin="primary"
+									title="宣传人员" checked="">
+							</div>
+						</div> -->
+						<div class="layui-form-item">
+							<label for="L_pass" class="layui-form-label">密码 </label>
+							<div class="layui-input-inline">
+								<input v-model="user.password" type="password" name="password"
+									autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">无需修改则留空</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="L_repass" class="layui-form-label"></label>
+							<button class="layui-btn" lay-submit lay-filter="editUser">修改</button>
+							<button class="layui-btn layui-btn-warm" @click="showListView()">返回</button>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+
+
 	</div>
 	<script
 		src="${pageContext.request.contextPath}/static/js/admin/list.js"></script>

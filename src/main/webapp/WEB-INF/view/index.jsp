@@ -36,17 +36,18 @@
 				</dl></li>
 		</ul>
 		<ul class="layui-nav right" lay-filter="">
-			<li class="layui-nav-item"><a href="javascript:;">Admin</a>
+			<li class="layui-nav-item"><a href="javascript:;"><shiro:principal
+						property="nickname" /></a>
 				<dl class="layui-nav-child">
 					<!-- 二级菜单 -->
 					<dd>
 						<a onclick="WeAdminShow('个人信息','http://www.baidu.com')">个人信息</a>
 					</dd>
 					<dd>
-						<a onclick="WeAdminShow('切换帐号','./login.do')">切换帐号</a>
+						<a onclick="WeAdminShow('切换帐号','${pageContext.request.contextPath}/login.do')">切换帐号</a>
 					</dd>
 					<dd>
-						<a class="loginout" href="login.do">退出</a>
+						<a class="loginout" href="${pageContext.request.contextPath}/admin/logout.do">退出</a>
 					</dd>
 				</dl></li>
 			<li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
@@ -105,23 +106,26 @@
 								<cite>订单列表</cite>
 						</a></li>
 					</ul></li>
-				<li><a href="javascript:;"> <i class="iconfont">&#xe726;</i>
-						<cite>管理员管理</cite> <i class="iconfont nav_right">&#xe697;</i>
-				</a>
-					<ul class="sub-menu">
-						<li><a _href="./admin/list.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>用户管理</cite>
-						</a></li>
-						<li><a _href="./admin/role.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>角色管理</cite>
-						</a></li>
-						<li><a _href="./admin/cate.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>权限分类</cite>
-						</a></li>
-						<li><a _href="./admin/rule.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>权限管理</cite>
-						</a></li>
-					</ul></li>
+				<shiro:hasRole name="superadmin">
+					<li><a href="javascript:;"> <i class="iconfont">&#xe726;</i>
+							<cite>管理员管理</cite> <i class="iconfont nav_right">&#xe697;</i>
+					</a>
+						<ul class="sub-menu">
+							<li><a _href="./admin/list.do"> <i class="iconfont">&#xe6a7;</i>
+									<cite>用户管理</cite>
+							</a></li>
+							<li><a _href="./admin/role.do"> <i class="iconfont">&#xe6a7;</i>
+									<cite>角色管理</cite>
+							</a></li>
+							<li><a _href="./admin/cate.do"> <i class="iconfont">&#xe6a7;</i>
+									<cite>权限分类</cite>
+							</a></li>
+							<li><a _href="./admin/rule.do"> <i class="iconfont">&#xe6a7;</i>
+									<cite>权限管理</cite>
+							</a></li>
+						</ul></li>
+
+				</shiro:hasRole>
 				<li><a href="javascript:;"> <i class="iconfont">&#xe6ce;</i>
 						<cite>系统统计</cite> <i class="iconfont nav_right">&#xe697;</i>
 				</a>

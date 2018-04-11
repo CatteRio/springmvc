@@ -43,4 +43,9 @@ public class UserServiceImpl implements IUserService {
 	public void deleteUserList(List<User> userList) {
 		userDAO.deleteUserList(userList);
 	}
+
+	@Override
+	public User findUserById(int id) {
+		return userDAO.findById(id);
+	}
 }

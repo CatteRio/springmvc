@@ -59,9 +59,7 @@ layui.use('table', function() {
 		var layEvent = obj.event;
 		var tr = obj.tr; // 获得当前行 tr 的DOM对象
 
-		if (layEvent === 'detail') { // 查看
-
-		} else if (layEvent === 'del') { // 删除
+		if (layEvent === 'del') { // 删除
 			confirm('确认删除？', function(index) {
 				$.ajax({
 					type : "post",
@@ -76,6 +74,25 @@ layui.use('table', function() {
 			});
 		} else if (layEvent === 'edit') { // 编辑
 
+			$.ajax({
+				type : "post",
+				url : baseApiPath + "/user/info.do",
+				data : data,
+				success : function(data) {
+					var user = data.data;
+					vm.user.id = user.id;
+					vm.user.username = user.username;
+					vm.user.role = user.role;
+					vm.user.nickname = user.nickname;
+					vm.user.mobile = user.mobile;
+					vm.user.email = user.email;
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(JSON.parse(jqXHR.responseText).message);
+				}
+			});
+
+			vm.showEditView();
 		}
 	});
 });
@@ -85,16 +102,34 @@ var vm = new Vue({
 	data : {
 		showList : true,
 		showAdd : false,
-		selectInput : ""
+		showEdit : false,
+		selectInput : "",
+		user : {
+			id : "",
+			role : "",
+			username : "",
+			nickname : "",
+			password : "",
+			repass : "",
+			mobile : "",
+			email : ""
+		}
 	},
 	methods : {
 		showAddView : function() {
 			this.showAdd = true;
 			this.showList = false;
+			this.showEdit = false;
 		},
 		showListView : function() {
 			this.showAdd = false;
 			this.showList = true;
+			this.showEdit = false;
+		},
+		showEditView : function() {
+			this.showAdd = false;
+			this.showList = false;
+			this.showEdit = true;
 		},
 		selectUser : function() {
 			var tableOptionins = cloneObj(tableOption);
@@ -122,6 +157,24 @@ var vm = new Vue({
 			});
 
 			console.log(checkStatus);
+		},
+		editUser : function() {
+			$.ajax({
+				type : "post",
+				url : baseApiPath + "/user/update.do",
+				data : vm.user,
+				success : function(data) {
+					alert(data.message, function() {
+						if (data.code == 200) {
+							vm.showListView();
+							tableins.reload();
+						}
+					});
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(JSON.parse(jqXHR.responseText).message);
+				}
+			});
 		}
 	}
 })
@@ -139,13 +192,17 @@ layui.use([ 'form' ], function() {
 	});
 	// 监听提交
 	form.on('submit(addUser)', function(data) {
-		console.log(data);
 		$.ajax({
 			type : "post",
 			url : baseApiPath + "/user/add.do",
 			data : data.field,
 			success : function(data) {
-				alert(data.message);
+				alert(data.message, function() {
+					if (data.code == 200) {
+						vm.showListView();
+						tableins.reload();
+					}
+				});
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert(JSON.parse(jqXHR.responseText).message);
@@ -153,4 +210,11 @@ layui.use([ 'form' ], function() {
 		});
 		return false;
 	});
+
+	// 监听提交
+	form.on('submit(editUser)', function(data) {
+		vm.editUser();
+		return false;
+	});
+
 });

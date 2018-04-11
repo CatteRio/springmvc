@@ -9,8 +9,9 @@
 		username, password,salt,role,mobile,email)
 		values(#{nickname},#{username},#{password},#{salt},#{role},#{mobile},#{email})
 	</insert>
-	<select id="findById" parameterType="String" resultType="User">
-		select *
+	<select id="findById" parameterType="Integer" resultType="User">
+		select
+		*
 		from user where id = #{id}
 	</select>
 	<select id="findByUserName" parameterType="String" resultType="User">
@@ -22,11 +23,25 @@
 	</delete>
 	<update id="update" parameterType="User">
 		update user set
-		nickname=
-		#{nickname},
-		username= #{username},
-		password= #{password},
-		role= #{role}
+		username=#{username}
+		<if test='nickname != null'>
+			,nickname=#{nickname}
+		</if>
+		<if test='role != null'>
+			,role= #{role}
+		</if>
+		<if test='password != null'>
+			,password= #{password}
+		</if>
+		<if test='salt != null'>
+			,salt= #{salt}
+		</if>
+		<if test='mobile != null'>
+			,mobile= #{mobile}
+		</if>
+		<if test='email != null'>
+			,email= #{email}
+		</if>
 		where id = #{id}
 	</update>
 	<select id="getUserListByLimit" resultType="User">

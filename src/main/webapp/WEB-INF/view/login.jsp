@@ -8,7 +8,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>后台登录中心</title>
-<%@include file="../common/header.jsp"%>
+<%@include file="common/header.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/css/login/styles.css">
 </head>
@@ -26,8 +26,8 @@
 							placeholder="用户名"> <input type="password" id="pwdinput"
 							name="password" placeholder="密码"> <input type="text"
 							id="capinput" name="captcha" placeholder="验证码"> <img
-							class="logincap" src="../captcha.do"
-							onclick="this.src='../captcha.do?d='+Math.random();"></img>
+							class="logincap" src="${pageContext.request.contextPath}/captcha.do"
+							onclick="this.src='${pageContext.request.contextPath}/captcha.do?d='+Math.random();"></img>
 					</form>
 					<button v-show="show" class="register"
 						onClick="login()">登陆</button>
