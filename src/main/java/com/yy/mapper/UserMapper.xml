@@ -6,8 +6,8 @@
 	<!-- id必须和mapper接口对应的功能名称一致 ，此处只写save功能 -->
 	<insert id="save" parameterType="User">
 		insert into user(nickname,
-		username, password,role)
-		values(#{nickname},#{username},#{password},#{role})
+		username, password,salt,role,mobile,email)
+		values(#{nickname},#{username},#{password},#{salt},#{role},#{mobile},#{email})
 	</insert>
 	<select id="findById" parameterType="String" resultType="User">
 		select *
@@ -31,8 +31,7 @@
 	</update>
 	<select id="getUserListByLimit" resultType="User">
 		select
-		user.i
-		d,user.userName,user.nickname,user.role,user.mobile,user.email
+		user.id,user.userName,user.nickname,user.role,user.mobile,user.email
 		from user
 		where id != 1
 		<if test='username != null'>

@@ -31,7 +31,7 @@ public class CommonUtils {
 		}
 	}
 
-	private static String toHex(byte[] bytes) {
+	public static String toHex(byte[] bytes) {
 
 		final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
 		StringBuilder ret = new StringBuilder(bytes.length * 2);

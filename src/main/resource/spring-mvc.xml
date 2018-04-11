@@ -38,8 +38,15 @@
 		<property name="prefix" value="/WEB-INF/view/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	<!-- 自定义拦截链配置 -->
-	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/admin/*.do" 
-		/> <mvc:exclude-mapping path="/admin/login*.do"/> <bean class="com.yy.interceptor.UserInterceptor"></bean> 
-		</mvc:interceptor> </mvc:interceptors> -->
+	
+	<!-- 配置shiro注解生效 -->
+	<bean id="lifecycleBeanPostProcessor"
+		class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor" />
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
 </beans>

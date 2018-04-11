@@ -109,13 +109,13 @@ var vm = new Vue({
 					type : "post",
 					url : baseApiPath + "/user/deletelist.do",
 					data : JSON.stringify(checkStatus.data),
-					contentType: 'application/json',
+					contentType : 'application/json',
 					success : function(data) {
 						alert(data.message);
 						tableins.reload();
 					},
-					error : function(data) {
-						alert(data.message);
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(JSON.parse(jqXHR.responseText).message);
 					}
 				});
 				layer.close(index);
@@ -125,3 +125,32 @@ var vm = new Vue({
 		}
 	}
 })
+
+// 新增用户部分代码
+layui.use([ 'form' ], function() {
+	var form = layui.form;
+	form.verify({
+		pass : [ /(.+){6,12}$/, '密码必须6到12位' ],
+		repass : function(value) {
+			if ($('#L_pass').val() != $('#L_repass').val()) {
+				return '两次密码不一致';
+			}
+		}
+	});
+	// 监听提交
+	form.on('submit(addUser)', function(data) {
+		console.log(data);
+		$.ajax({
+			type : "post",
+			url : baseApiPath + "/user/add.do",
+			data : data.field,
+			success : function(data) {
+				alert(data.message);
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(JSON.parse(jqXHR.responseText).message);
+			}
+		});
+		return false;
+	});
+});
