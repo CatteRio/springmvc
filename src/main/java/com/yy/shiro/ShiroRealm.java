@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yy.pojo.User;
 import com.yy.service.IUserService;
-import com.yy.utils.CommonUtils;
 
 /**
  * @author Rio
@@ -28,7 +27,8 @@ public class ShiroRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		User user = (User) principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		info.addRole(user.getRole().trim());
+		String premission = userService.findRoleByUser(user);
+		info.addRole(premission.trim());
 		return info;
 	}
 

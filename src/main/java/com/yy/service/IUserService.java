@@ -16,4 +16,5 @@ public interface IUserService {
 	List<User> getUserListByLimit(PageInfo page,String username);
 	void deleteUser(User user);
 	void deleteUserList(List<User> userList);
+	String findRoleByUser(User user);
 }

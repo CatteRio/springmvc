@@ -32,7 +32,7 @@ var tableOption = {
 		field : 'nickname',
 		title : '昵称'
 	}, {
-		field : 'role',
+		field : 'roleid',
 		title : '角色'
 	}, {
 		field : 'mobile',
@@ -97,87 +97,106 @@ layui.use('table', function() {
 	});
 });
 
-var vm = new Vue({
-	el : '#vcontroller',
-	data : {
-		showList : true,
-		showAdd : false,
-		showEdit : false,
-		selectInput : "",
-		user : {
-			id : "",
-			role : "",
-			username : "",
-			nickname : "",
-			password : "",
-			repass : "",
-			mobile : "",
-			email : ""
-		}
-	},
-	methods : {
-		showAddView : function() {
-			this.showAdd = true;
-			this.showList = false;
-			this.showEdit = false;
-		},
-		showListView : function() {
-			this.showAdd = false;
-			this.showList = true;
-			this.showEdit = false;
-		},
-		showEditView : function() {
-			this.showAdd = false;
-			this.showList = false;
-			this.showEdit = true;
-		},
-		selectUser : function() {
-			var tableOptionins = cloneObj(tableOption);
-			tableOptionins.where.username = this.selectInput;
-			tableins.reload(tableOptionins);
-		},
-		deleteSelect : function() {
-			var table = layui.table;
-			var checkStatus = table.checkStatus('base');
-			confirm('确认删除所选用户？', function(index) {
-				$.ajax({
-					type : "post",
-					url : baseApiPath + "/user/deletelist.do",
-					data : JSON.stringify(checkStatus.data),
-					contentType : 'application/json',
-					success : function(data) {
-						alert(data.message);
-						tableins.reload();
-					},
-					error : function(jqXHR, textStatus, errorThrown) {
-						alert(JSON.parse(jqXHR.responseText).message);
-					}
-				});
-				layer.close(index);
-			});
+var vm = new Vue(
+		{
+			el : '#vcontroller',
+			data : {
+				showList : true,
+				showAdd : false,
+				showEdit : false,
+				selectInput : "",
+				user : {
+					id : "",
+					role : "",
+					username : "",
+					nickname : "",
+					password : "",
+					repass : "",
+					mobile : "",
+					email : ""
+				}
+			},
+			methods : {
+				showAddView : function() {
+					this.showAdd = true;
+					this.showList = false;
+					this.showEdit = false;
+				},
+				showListView : function() {
+					this.showAdd = false;
+					this.showList = true;
+					this.showEdit = false;
+				},
+				showEditView : function() {
+					this.showAdd = false;
+					this.showList = false;
+					this.showEdit = true;
+				},
+				selectUser : function() {
+					var tableOptionins = cloneObj(tableOption);
+					tableOptionins.where.username = this.selectInput;
+					tableins.reload(tableOptionins);
+				},
+				deleteSelect : function() {
+					var table = layui.table;
+					var checkStatus = table.checkStatus('base');
+					confirm('确认删除所选用户？', function(index) {
+						$.ajax({
+							type : "post",
+							url : baseApiPath + "/user/deletelist.do",
+							data : JSON.stringify(checkStatus.data),
+							contentType : 'application/json',
+							success : function(data) {
+								alert(data.message);
+								tableins.reload();
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(JSON.parse(jqXHR.responseText).message);
+							}
+						});
+						layer.close(index);
+					});
 
-			console.log(checkStatus);
-		},
-		editUser : function() {
-			$.ajax({
-				type : "post",
-				url : baseApiPath + "/user/update.do",
-				data : vm.user,
-				success : function(data) {
-					alert(data.message, function() {
-						if (data.code == 200) {
-							vm.showListView();
-							tableins.reload();
+					console.log(checkStatus);
+				},
+				editUser : function() {
+					$.ajax({
+						type : "post",
+						url : baseApiPath + "/user/update.do",
+						data : vm.user,
+						success : function(data) {
+							alert(data.message, function() {
+								if (data.code == 200) {
+									vm.showListView();
+									tableins.reload();
+								}
+							});
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							alert(JSON.parse(jqXHR.responseText).message);
 						}
 					});
 				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert(JSON.parse(jqXHR.responseText).message);
+				loadRole : function() {
+					$.ajax({
+						type : "post",
+						url : baseApiPath + "/role/list.do",
+						success : function(data) {
+							layer.open({
+								type : 1,
+								title:"选择角色",
+								area: ['380px', '540px'],
+								skin : 'layui-layer-rim', // 加上边框
+								content :$('#select')
+							});
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							alert(JSON.parse(jqXHR.responseText).message);
+						}
+					});
 				}
-			});
-		}
-	}
-})
+			}
+		})
 
 // 新增用户部分代码
 layui.use([ 'form' ], function() {

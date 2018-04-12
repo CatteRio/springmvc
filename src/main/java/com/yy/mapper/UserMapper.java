@@ -24,4 +24,5 @@ public interface UserMapper {
 
 	void deleteUserList(List<User> userList);
 
+	String findRoleByUser(User user);
 }

@@ -1,34 +1,22 @@
 package com.yy.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.yy.pojo.User;
-import com.yy.service.IUserService;
-import com.yy.utils.CommonUtils;
-import com.yy.utils.PageInfo;
-import com.yy.utils.PageReply;
 import com.yy.utils.Reply;
 
 @RestController
 @RequestMapping("/api")
 public class LoginController {
-
-	@Autowired
-	private IUserService userService;
 
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	public Reply loginProcess(User user, String captcha, Model model, HttpSession session) {
@@ -61,80 +49,6 @@ public class LoginController {
 			return true; // 参数未改变，无需重新登录，默认为已经登录成功
 		}
 		return false; // 需要重新登陆
-	}
-
-	@RequestMapping("/user/list.do")
-	public PageReply getUserList(int page, int limit, String username) {
-		PageInfo pageInfo = new PageInfo();
-		if (page <= 0) {
-			page = 1;
-		}
-		int currentResult = (page - 1) * limit;
-		pageInfo.setCurrentResult(currentResult);
-		pageInfo.setShowCount(limit);
-		List<User> userList = userService.getUserListByLimit(pageInfo, username);
-		return PageReply.ok(pageInfo.getTotalResult(), userList);
-	}
-
-	@RequestMapping("/user/delete.do")
-	public Reply deleteUser(User user) {
-		if (user.getRole().equals("superadmin")) {
-			return Reply.error("无法删除超级管理员");
-		}
-		userService.deleteUser(user);
-		return Reply.ok("删除成功");
-	}
-
-	@RequestMapping("/user/deletelist.do")
-	public Reply deleteUserList(@RequestBody List<User> users) {
-		userService.deleteUserList(users);
-		return Reply.ok("删除成功");
-	}
-
-	@RequiresRoles(value = { "superadmin" })
-	@RequestMapping("/user/add.do")
-	public Reply addUser(User frontUser) {
-		User user = userService.findUserByUserName(frontUser.getUsername());
-		if (user != null) {
-			return Reply.error("用户名已存在");
-		}
-		frontUser.setRole("admin");
-		frontUser.setSalt(CommonUtils.randomSalt());
-		String password = CommonUtils
-				.toHex(CommonUtils.digest(CommonUtils.MD5(frontUser.getPassword()), frontUser.getSalt().getBytes()));
-		frontUser.setPassword(password);
-		userService.saveUser(frontUser);
-		return Reply.ok("添加成功");
-	}
-
-	@RequiresRoles(value = { "superadmin" })
-	@RequestMapping("/user/info.do")
-	public Reply getUserInfo(int id) {
-		User user = userService.findUserById(id);
-		if (user == null) {
-			user = new User();
-		}
-		return Reply.ok(user);
-	}
-
-	@RequiresRoles(value = { "superadmin" })
-	@RequestMapping("/user/update.do")
-	public Reply updateUserInfo(User user) {
-		if (userService.findUserByUserName(user.getUsername()) != null) {
-			return Reply.error("用户名已存在");
-		}
-		if (user.getPassword() != null) {
-			if (user.getPassword().isEmpty()) {
-				user.setPassword(null);
-			} else {
-				user.setSalt(CommonUtils.randomSalt());
-				String password = CommonUtils
-						.toHex(CommonUtils.digest(CommonUtils.MD5(user.getPassword()), user.getSalt().getBytes()));
-				user.setPassword(password);
-			}
-		}
-		userService.updateUser(user);
-		return Reply.ok("修改成功");
 	}
 
 }

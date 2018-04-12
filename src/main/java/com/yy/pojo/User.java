@@ -9,7 +9,7 @@ import lombok.Data;
 @Component
 @Data
 public class User {
-	private String id;
+	private int id;
 	private String username;
 	@JSONField(serialize=false)
 	private String password;
@@ -18,5 +18,5 @@ public class User {
 	private String email;
 	@JSONField(serialize=false)
 	private String salt;
-	private String role;
+	private int roleid;
 }
