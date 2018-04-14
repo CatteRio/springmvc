@@ -1,11 +1,13 @@
 package com.yy.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yy.mapper.UserMapper;
+import com.yy.pojo.Role;
 import com.yy.pojo.User;
 import com.yy.service.IUserService;
 import com.yy.utils.PageInfo;
@@ -16,7 +18,10 @@ public class UserServiceImpl implements IUserService {
 	private UserMapper userDAO;
 
 	public void saveUser(User user) {
+		List<Role> roles = user.getRoles();
 		userDAO.save(user);
+		user = userDAO.findByUserName(user.getUsername());
+		userDAO.saveUserRole(roles, user);
 	}
 
 	@Override
@@ -27,6 +32,10 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void updateUser(User user) {
 		userDAO.update(user);
+		List<Integer> ids = new ArrayList<>();
+		ids.add(user.getId());
+		userDAO.deleteUserRoles(ids);
+		userDAO.saveUserRole(user.getRoles(), user);
 	}
 
 	@Override
@@ -36,11 +45,19 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public void deleteUser(User user) {
+		List<Integer> userIds = new ArrayList<>();
+		userIds.add(user.getId());
+		userDAO.deleteUserRoles(userIds);
 		userDAO.delete(user);
 	}
 
 	@Override
 	public void deleteUserList(List<User> userList) {
+		List<Integer> userIds = new ArrayList<>();
+		for (User user : userList) {
+			userIds.add(user.getId());
+		}
+		userDAO.deleteUserRoles(userIds);
 		userDAO.deleteUserList(userList);
 	}
 
@@ -49,8 +66,4 @@ public class UserServiceImpl implements IUserService {
 		return userDAO.findById(id);
 	}
 
-	@Override
-	public String findRoleByUser(User user) {
-		return userDAO.findRoleByUser(user);
-	}
 }

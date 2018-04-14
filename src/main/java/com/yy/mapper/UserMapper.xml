@@ -3,22 +3,47 @@
                 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace必须与接口的全类名一致 -->
 <mapper namespace="com.yy.mapper.UserMapper">
+
+
+	<resultMap type="User" id="UserMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<collection column="id" property="roles" javaType="list"
+			select="selectAllRoles"></collection>
+	</resultMap>
+
+
+
+	<select id="selectAllRoles" parameterType="INTEGER" resultType="Role">
+		select id,role,remark
+		from role where id in (select user_role.roleid
+		from user_role where
+		user_role.userid=#{id})
+	</select>
+
+
 	<!-- id必须和mapper接口对应的功能名称一致 ，此处只写save功能 -->
 	<insert id="save" parameterType="User">
 		insert into user(nickname,
-		username, password,salt,roleid,mobile,email)
-		values(#{nickname},#{username},#{password},#{salt},#{roleid},#{mobile},#{email})
+		username, password,salt,mobile,email)
+		values(#{nickname},#{username},#{password},#{salt},#{mobile},#{email})
 	</insert>
-	<select id="findById" parameterType="Integer" resultType="User">
+	<select id="findById" parameterType="Integer" resultMap="UserMap">
 		select
 		*
 		from user where id = #{id}
 	</select>
-	<select id="findByUserName" parameterType="String" resultType="User">
+	<select id="findByUserName" parameterType="String" resultMap="UserMap">
 		select * from user where username = #{username}
 	</select>
 	<delete id="delete" parameterType="User">
-		delete from user where id =
+		delete from user where user.id
+		=
 		#{id}
 	</delete>
 	<update id="update" parameterType="User">
@@ -26,9 +51,6 @@
 		username=#{username}
 		<if test='nickname != null'>
 			,nickname=#{nickname}
-		</if>
-		<if test='roleid != 0'>
-			,roleid= #{roleid}
 		</if>
 		<if test='password != null'>
 			,password= #{password}
@@ -44,11 +66,12 @@
 		</if>
 		where id = #{id}
 	</update>
-	<select id="getUserListByLimit" resultType="User">
-	select
-	user.id,user.userName,user.nickname,user.roleid,user.mobile,user.email
-	from user
-	where id != 1
+	<select id="getUserListByLimit" resultMap="UserMap">
+		select
+		user.id,user.userName,user.nickname,user.mobile,user.email
+		from
+		user
+		where id != 1
 		<if test='username != null'>
 			and userName like '%${username}%'
 		</if>
@@ -56,17 +79,29 @@
 
 	<delete id="deleteUserList" parameterType="java.util.List">
 		delete from user
-		where id in
+		where user.id in
 		<foreach item="param" collection="list" open="(" close=")"
 			separator=",">
 			#{param.id}
 		</foreach>
 	</delete>
+	<delete id="deleteUserRoles" parameterType="java.util.List">
+		delete from user_role
+		where user_role.userid in
+		<foreach item="param" collection="list" open="(" close=")"
+			separator=",">
+			#{param}
+		</foreach>
+	</delete>
 
-	<select id="findRoleByUser" parameterType="User" resultType="java.lang.String">
-		select role from
-		role,user
-		where user.roleid = role.id and user.id = #{id}
-	</select>
+	<insert id="saveUserRole">
+		insert into user_role(userid,
+		roleid)
+		values
+		<foreach item="role" collection="roles" separator=",">
+			(#{user.id},#{role.id})
+		</foreach>
+	</insert>
+
 
 </mapper>  

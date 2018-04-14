@@ -4,7 +4,9 @@
 <script src="${pageContext.request.contextPath}/static/common/md5.js"></script>
 <script src="${pageContext.request.contextPath}/static/common/layui/layui.js"></script>
 <script src="${pageContext.request.contextPath}/static/common/vue/vue.js"></script>
+<script src="${pageContext.request.contextPath}/static/common/labelauty/labelauty.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/common/layui/css/layui.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/common/labelauty/labelauty.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/font.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/my.css">
 <script>

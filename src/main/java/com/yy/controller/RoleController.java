@@ -18,7 +18,7 @@ public class RoleController {
 	private IRoleService roleService;
 
 	@RequestMapping("/list.do")
-	public Reply getRoles() {
+	public Reply getRoles(Integer id) {
 		return Reply.ok(roleService.selectAll());
 	}
 

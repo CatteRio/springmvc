@@ -1,5 +1,7 @@
 package com.yy.pojo;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -18,5 +20,5 @@ public class User {
 	private String email;
 	@JSONField(serialize=false)
 	private String salt;
-	private int roleid;
+	private List<Role> roles;
 }

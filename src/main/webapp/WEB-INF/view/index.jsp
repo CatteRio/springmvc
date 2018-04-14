@@ -106,7 +106,7 @@
 								<cite>订单列表</cite>
 						</a></li>
 					</ul></li>
-				<shiro:hasRole name="superadmin">
+				<shiro:hasRole name="管理员">
 					<li><a href="javascript:;"> <i class="iconfont">&#xe726;</i>
 							<cite>管理员管理</cite> <i class="iconfont nav_right">&#xe697;</i>
 					</a>

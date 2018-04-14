@@ -31,3 +31,14 @@ function cloneObj(obj) {
 	}
 	return newObj;
 };
+
+// 给array扩展是否包含某个元素功能
+Array.prototype.contains = function(obj) {
+	var i = this.length;
+	while (i--) {
+		if (this[i] === obj) {
+			return true;
+		}
+	}
+	return false;
+}

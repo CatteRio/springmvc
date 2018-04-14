@@ -11,6 +11,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.yy.pojo.Role;
 import com.yy.pojo.User;
 import com.yy.service.IUserService;
 
@@ -27,8 +28,9 @@ public class ShiroRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		User user = (User) principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		String premission = userService.findRoleByUser(user);
-		info.addRole(premission.trim());
+		for (Role role : user.getRoles()) {
+			info.addRole(role.getRole());
+		}
 		return info;
 	}
 
