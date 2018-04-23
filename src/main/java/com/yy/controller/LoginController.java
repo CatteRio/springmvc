@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.yy.pojo.User;
 import com.yy.utils.Reply;
-
+/**
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:14:25
+ */
 @RestController
 @RequestMapping("/api")
 public class LoginController {

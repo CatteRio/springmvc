@@ -12,6 +12,11 @@ import com.yy.pojo.User;
 import com.yy.service.IUserService;
 import com.yy.utils.PageInfo;
 
+/**
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:15:54
+ */
 @Service
 public class UserServiceImpl implements IUserService {
 	@Autowired
@@ -39,8 +44,8 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public List<User> getUserListByLimit(PageInfo page,String username) {
-		return userDAO.getUserListByLimit(page,username);
+	public List<User> getUserListByLimit(PageInfo page, String username) {
+		return userDAO.getUserListByLimit(page, username);
 	}
 
 	@Override

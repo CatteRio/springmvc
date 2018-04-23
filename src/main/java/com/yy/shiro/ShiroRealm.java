@@ -16,8 +16,9 @@ import com.yy.pojo.User;
 import com.yy.service.IUserService;
 
 /**
- * @author Rio
- * @Date 2018年4月3日 下午3:09:15
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:16:01
  */
 public class ShiroRealm extends AuthorizingRealm {
 

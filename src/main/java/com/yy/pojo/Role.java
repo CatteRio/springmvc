@@ -1,9 +1,13 @@
 package com.yy.pojo;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import java.util.List;
 
 import lombok.Data;
-
+/**
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:15:17
+ */
 @Data
 public class Role {
 	private Integer id;
@@ -15,4 +19,6 @@ public class Role {
 	private boolean status;
 
 	private boolean checked;
+
+	private List<Premission> premissions;
 }

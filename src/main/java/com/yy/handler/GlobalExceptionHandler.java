@@ -9,8 +9,9 @@ import org.springframework.http.HttpStatus;
 import com.yy.utils.Reply;
 
 /**
- * @author Rio
- * @Date 2018年4月3日 下午4:55:07
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:14:47
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {

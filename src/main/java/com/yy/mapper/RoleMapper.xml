@@ -6,10 +6,25 @@
 		<result column="role" jdbcType="VARCHAR" property="role" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="status" jdbcType="TINYINT" property="status" />
+		<collection column="id" property="premissions" javaType="list"
+			select="selectAllPremission"></collection>
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, role, remark, status
 	</sql>
+
+	<select id="selectAllPremission" parameterType="INTEGER"
+		resultType="Premission">
+		select id,content,remark
+		from premission where id in (select
+		role_premission.premissionid
+		from role_premission where
+		role_premission.roleid=#{id})
+	</select>
+
+
+
+
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
 		select
@@ -89,4 +104,50 @@
 		<include refid="Base_Column_List" />
 		from role
 	</select>
+
+
+
+	<select id="getRoleListByLimit" resultMap="BaseResultMap">
+		select
+		r.id,r.role,r.remark,r.status
+		from
+		role as r
+		<if test='role != null'>
+			where role like '%${role}%'
+		</if>
+	</select>
+
+	<delete id="deleteRoleList" parameterType="java.util.List">
+		delete from role
+		where role.id in
+		<foreach item="param" collection="list" open="(" close=")"
+			separator=",">
+			#{param.id}
+		</foreach>
+	</delete>
+	<delete id="deleteRolePremissions" parameterType="java.util.List">
+		delete from role_premission
+		where role_premission.roleid in
+		<foreach item="param" collection="list" open="(" close=")"
+			separator=",">
+			#{param}
+		</foreach>
+	</delete>
+
+	<insert id="saveRolePremission">
+		insert into role_premission(roleid,
+		premissionid)
+		values
+		<foreach item="premission" collection="premissions" separator=",">
+			(#{role.id},#{premission.id})
+		</foreach>
+	</insert>
+	<select id="selectByRoleName" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from role where role.role = #{role}
+	</select>
+
+
+
 </mapper>

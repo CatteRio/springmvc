@@ -3,7 +3,9 @@ package com.yy.utils;
 import lombok.Data;
 
 /**
- * @author Rio 2018年4月8日下午11:21:08
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:16:48
  */
 @Data
 public class PageReply extends Reply {

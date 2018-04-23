@@ -1,0 +1,26 @@
+package com.yy.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.yy.service.impl.PremissionService;
+import com.yy.utils.Reply;
+
+/**
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:14:29
+ */
+@RestController
+@RequestMapping("/api/premission")
+public class PremissionController {
+
+	@Autowired
+	private PremissionService premissionService;
+
+	@RequestMapping("/all/list.do")
+	public Reply getPremissions(Integer id) {
+		return Reply.ok(premissionService.listAll());
+	}
+}

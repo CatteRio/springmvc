@@ -15,6 +15,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 上午9:48:08
+ */
 @Controller
 public class CaptchaCodeController {
 	private int width = 115;// 定义图片的width
@@ -23,8 +28,8 @@ public class CaptchaCodeController {
 	private int xx = 25;
 	private int fontHeight = 40;
 	private int codeY = 37;
-	char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S',
-			'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+	char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+			'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
 	@RequestMapping("/captcha.do")
 	public void getCaptcha(HttpServletResponse response, HttpSession session) throws IOException {

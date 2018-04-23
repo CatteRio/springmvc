@@ -33,8 +33,9 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
- * @author Rio
- * 2018年4月8日下午8:36:49
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:16:30
  */
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class}) })
 public class PagePlugin implements Interceptor {

@@ -5,7 +5,9 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * @author Rio 2018年4月8日下午8:32:25
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:16:24
  */
 @Data
 public class PageInfo implements Serializable {

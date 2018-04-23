@@ -4,7 +4,6 @@
 <!-- namespace必须与接口的全类名一致 -->
 <mapper namespace="com.yy.mapper.UserMapper">
 
-
 	<resultMap type="User" id="UserMap">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="username" property="username" jdbcType="VARCHAR" />
@@ -16,9 +15,7 @@
 		<collection column="id" property="roles" javaType="list"
 			select="selectAllRoles"></collection>
 	</resultMap>
-
-
-
+	
 	<select id="selectAllRoles" parameterType="INTEGER" resultType="Role">
 		select id,role,remark
 		from role where id in (select user_role.roleid
@@ -66,6 +63,8 @@
 		</if>
 		where id = #{id}
 	</update>
+	
+	
 	<select id="getUserListByLimit" resultMap="UserMap">
 		select
 		user.id,user.userName,user.nickname,user.mobile,user.email

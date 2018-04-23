@@ -7,7 +7,7 @@ var tableOption = {
 	where : {
 
 	},
-	url : baseApiPath + '/user/list.do', // 数据接口
+	url : baseApiPath + '/role/list.do', // 数据接口
 	method : 'post',
 	response : {
 		statusName : 'code',// 数据状态的字段名称，默认：code
@@ -26,32 +26,26 @@ var tableOption = {
 		sort : true,
 		width : 80
 	}, {
-		field : 'username',
-		title : '用户名'
+		field : 'role',
+		title : '角色'
 	}, {
-		field : 'nickname',
-		title : '昵称'
+		field : 'remark',
+		title : '备注'
 	}, {
-		field : 'roleid',
-		title : '角色',
+		field : 'premissionid',
+		title : '权限',
 		templet: function(d){
-			d = d.roles;
-			var roles = "";
+			d = d.premissions;
+			var premissions = "";
 			for(var i = 0;i <d.length;i++){
-				role = d[i];
-				roles = roles +  role.role;
+				premission = d[i];
+				premissions = premissions +  premission.content;
 				if(i<d.length-1){
-					roles = roles+",";
+					premissions = premissions+",";
 				}
 			}
-	        return roles;
+	        return premissions;
 	    }
-	}, {
-		field : 'mobile',
-		title : '手机号'
-	}, {
-		field : 'email',
-		title : '邮箱地址'
 	}, {
 		fixed : 'right',
 		width : 150,
@@ -75,7 +69,7 @@ layui.use('table', function() {
 			confirm('确认删除？', function(index) {
 				$.ajax({
 					type : "post",
-					url : baseApiPath + "/user/delete.do",
+					url : baseApiPath + "/role/delete.do",
 					data : "id="+data.id,
 					success : function(data) {
 						alert(data.message);
@@ -88,30 +82,28 @@ layui.use('table', function() {
 
 			$.ajax({
 				type : "post",
-				url : baseApiPath + "/user/info.do",
+				url : baseApiPath + "/role/info.do",
 				data : data,
 				success : function(data) {
-					var user = data.data;
-					var roles = user.roles;
-					var roleNames = "";
-					var roleadds = [];
-					for(var i = 0;i <roles.length;i++){
-						role = roles[i];
-						roleNames = roleNames +  role.role;
-						roleadds.push(role.id);
-						if(i<roles.length-1){
-							roleNames = roleNames+",";
+					var role = data.data;
+					var premissions = role.premissions;
+					var premissionNames = "";
+					var premissionadds = [];
+					for(var i = 0;i <premissions.length;i++){
+						premission = premissions[i];
+						premissionNames = premissionNames +  premission.content;
+						premissionadds.push(premission.id);
+						if(i<premissions.length-1){
+							premissionNames = premissionNames+",";
 						}
 					}
 					
 					
-					$('#role2').val(roleNames);
-					vm.user.id = user.id;
-					vm.user.username = user.username;
-					vm.user.roleadd = roleadds;
-					vm.user.nickname = user.nickname;
-					vm.user.mobile = user.mobile;
-					vm.user.email = user.email;
+					$('#premission2').val(premissionNames);
+					vm.role.id = role.id;
+					vm.role.role = role.role;
+					vm.role.remark = role.remark;
+					vm.role.premissionadd = premissionadds;
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert(JSON.parse(jqXHR.responseText).message);
@@ -130,45 +122,30 @@ var vm = new Vue({
 		showAdd : false,
 		showEdit : false,
 		selectInput : "",
-		user : {
+		role : {
 			id : "",
-			roleadd : [],
-			username : "",
-			nickname : "",
-			password : "",
-			repass : "",
-			mobile : "",
-			email : ""
+			premissionadd : [],
+			role : "",
+			remark : ""
 		}
 	},
 	methods : {
-		showAddView : function() {
-			this.showAdd = true;
-			this.showList = false;
-			this.showEdit = false;
-		},
-		showListView : function() {
-			this.showAdd = false;
-			this.showList = true;
-			this.showEdit = false;
-		},
-		showEditView : function() {
-			this.showAdd = false;
-			this.showList = false;
-			this.showEdit = true;
-		},
-		selectUser : function() {
+		selectRole : function() {
 			var tableOptionins = cloneObj(tableOption);
-			tableOptionins.where.username = this.selectInput;
+			tableOptionins.where.role = this.selectInput;
 			tableins.reload(tableOptionins);
 		},
 		deleteSelect : function() {
 			var table = layui.table;
 			var checkStatus = table.checkStatus('base');
-			confirm('确认删除所选用户？', function(index) {
+			if(checkStatus.data.length == 0){
+				alert("请选中至少一条记录");
+				return ;
+			}
+			confirm('确认删除所选角色？', function(index) {
 				$.ajax({
 					type : "post",
-					url : baseApiPath + "/user/deletelist.do",
+					url : baseApiPath + "/role/deletelist.do",
 					data : JSON.stringify(checkStatus.data),
 					contentType : 'application/json',
 					success : function(data) {
@@ -184,17 +161,75 @@ var vm = new Vue({
 
 			console.log(checkStatus);
 		},
-		editUser : function() {
+		showAddView : function() {
+			this.showAdd = true;
+			this.showList = false;
+			this.showEdit = false;
+		},
+		showListView : function() {
+			this.showAdd = false;
+			this.showList = true;
+			this.showEdit = false;
+		},
+		showEditView : function() {
+			this.showAdd = false;
+			this.showList = false;
+			this.showEdit = true;
+		},
+		loadPremission : function(premission1,premission2) {
+			//console.log(role1,role2)
 			$.ajax({
 				type : "post",
-				url : baseApiPath + "/user/update.do",
-				data : vm.user,
+				url : baseApiPath + "/premission/all/list.do",
 				success : function(data) {
-					alert(data.message, function() {
-						if (data.code == 200) {
-							vm.showListView();
-							tableins.reload();
+					alreadyRoles = $('#'+premission1).val().split(",")
+					var premissions = data.data;
+					var html = "";
+					for(j = 0; j < premissions.length; j++) {
+						var premission = premissions[j];
+						html = html + "<div class=\"layui-inline my-list-iteam\">\r\n";
+						html = html + "<input type=\"checkbox\" premission=\""+premission.content+"\" class=\"chklist\" value=\""+premission.id+"\" ";
+						if(alreadyRoles.contains(premission.content)){
+							html = html +"checked=\"checked\"";
 						}
+						html = html +"/>\r\n";
+						html = html + "<label class=\"chkbox\"> \r\n"
+						html = html + "<span class=\"check-image\"></span>  \r\n"
+						html = html + "<span class=\"radiobox-content\">"+premission.content+"</span>  \r\n"
+						html = html + "</label></div> \r\n"
+					}
+					$('#selectbody').html(html);
+					$(".chklist").labelauty("chklist", "check");
+					layer.open({
+						type : 1,
+						title : "选择权限",
+						area : [ '540px', '380px' ],
+						skin : 'layui-layer-rim', // 加上边框
+						content : $('#select'),
+						btn : [ '确定', '取消' ],
+						yes : function(index, layero) {
+							var premissions = [];
+							var premissionids = [];
+							$('#selectbody input:checked').each(function(){
+								premissions.push($(this).attr('premission'));
+								premissionids.push($(this).val());
+							});
+							var premissionVal="";
+							for(var i=0;i<premissions.length;i++){
+								premissionVal = premissionVal + premissions[i];
+								if(i<premissions.length-1){
+									premissionVal = premissionVal+",";
+								}
+							}
+							$('#'+premission1).val(premissionVal);
+							$('#'+premission2).val(premissionids);
+							vm.role.premissionadd = premissionids;
+							layer.close(index);
+						},
+						btn2 : function(index, layero) {
+							// alert("取消了");
+						},
+						btnAlign : 'c'
 					});
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -202,61 +237,17 @@ var vm = new Vue({
 				}
 			});
 		},
-		loadRole : function(role1,role2) {
-			//console.log(role1,role2)
+		editRole : function() {
 			$.ajax({
 				type : "post",
-				url : baseApiPath + "/role/list.do",
+				url : baseApiPath + "/role/update.do",
+				data : vm.role,
 				success : function(data) {
-					alreadyRoles = $('#'+role1).val().split(",")
-					var roles = data.data;
-					var html = "";
-					for(j = 0; j < roles.length; j++) {
-						var role = roles[j];
-						html = html + "<div class=\"layui-inline my-list-iteam\">\r\n";
-						html = html + "<input type=\"checkbox\" role=\""+role.role+"\" class=\"chklist\" value=\""+role.id+"\" ";
-						if(alreadyRoles.contains(role.role)){
-							html = html +"checked=\"checked\"";
+					alert(data.message, function() {
+						if (data.code == 200) {
+							vm.showListView();
+							tableins.reload();
 						}
-						html = html +"/>\r\n";
-						html = html + "<label class=\"chkbox\"> \r\n"
-						html = html + "<span class=\"check-image\"></span>  \r\n"
-						html = html + "<span class=\"radiobox-content\">"+role.role+"</span>  \r\n"
-						html = html + "</label></div> \r\n"
-					}
-					$('#selectbody').html(html);
-					$(".chklist").labelauty("chklist", "check");
-					layer.open({
-						type : 1,
-						title : "选择角色",
-						area : [ '540px', '380px' ],
-						skin : 'layui-layer-rim', // 加上边框
-						content : $('#select'),
-						btn : [ '确定', '取消' ],
-						yes : function(index, layero) {
-							// console.log(vm.user.roleids);
-							var roles = [];
-							var roleids = [];
-							$('#selectbody input:checked').each(function(){
-								roles.push($(this).attr('role'));
-								roleids.push($(this).val());
-							});
-							var roleVal="";
-							for(var i=0;i<roles.length;i++){
-								roleVal = roleVal + roles[i];
-								if(i<roles.length-1){
-									roleVal = roleVal+",";
-								}
-							}
-							$('#'+role1).val(roleVal);
-							$('#'+role2).val(roleids);
-							vm.user.roleadd = roleids;
-							layer.close(index);
-						},
-						btn2 : function(index, layero) {
-							// alert("取消了");
-						},
-						btnAlign : 'c'
 					});
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -279,10 +270,10 @@ layui.use([ 'form' ], function() {
 		}
 	});
 	// 监听提交
-	form.on('submit(addUser)', function(data) {
+	form.on('submit(addRole)', function(data) {
 		$.ajax({
 			type : "post",
-			url : baseApiPath + "/user/add.do",
+			url : baseApiPath + "/role/add.do",
 			data : data.field,
 			success : function(data) {
 				alert(data.message, function() {
@@ -300,8 +291,8 @@ layui.use([ 'form' ], function() {
 	});
 
 	// 监听提交
-	form.on('submit(editUser)', function(data) {
-		vm.editUser();
+	form.on('submit(editRole)', function(data) {
+		vm.editRole();
 		return false;
 	});
 

@@ -111,7 +111,7 @@
 							<cite>管理员管理</cite> <i class="iconfont nav_right">&#xe697;</i>
 					</a>
 						<ul class="sub-menu">
-							<li><a _href="./admin/list.do"> <i class="iconfont">&#xe6a7;</i>
+							<li><a _href="./admin/user.do"> <i class="iconfont">&#xe6a7;</i>
 									<cite>用户管理</cite>
 							</a></li>
 							<li><a _href="./admin/role.do"> <i class="iconfont">&#xe6a7;</i>

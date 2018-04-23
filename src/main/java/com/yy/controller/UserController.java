@@ -20,10 +20,10 @@ import com.yy.utils.PageReply;
 import com.yy.utils.Reply;
 
 /**
- * @author Rio
- * @Date 2018年4月3日 下午4:41:51
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:14:42
  */
-
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

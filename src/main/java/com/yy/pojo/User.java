@@ -7,7 +7,11 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import lombok.Data;
-
+/**
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:15:21
+ */
 @Component
 @Data
 public class User {

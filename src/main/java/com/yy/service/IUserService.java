@@ -6,8 +6,11 @@ import org.springframework.stereotype.Component;
 
 import com.yy.pojo.User;
 import com.yy.utils.PageInfo;
-
-@Component
+/**
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:15:38
+ */
 public interface IUserService {
 	void saveUser(User user);
 	void updateUser(User user);

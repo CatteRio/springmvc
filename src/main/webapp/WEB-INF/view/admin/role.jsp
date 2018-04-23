@@ -5,96 +5,154 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>用户管理-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+<title>角色管理-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
 <%@include file="../common/header.jsp"%>
 </head>
 
 <body>
-	<div class="weadmin-nav">
-		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">管理员管理</a>
-			<a> <cite>角色管理</cite></a>
-		</span> <a class="layui-btn layui-btn-sm"
-			style="line-height: 1.6em; margin-top: 3px; float: right"
-			href="javascript:location.replace(location.href);" title="刷新"> <i
-			class="layui-icon" style="line-height: 30px">ဂ</i></a>
-	</div>
-	<div class="weadmin-body">
-		<div class="layui-row">
-			<form class="layui-form layui-col-md12 we-search">
-				<div class="layui-inline">
-					<input class="layui-input" placeholder="开始日" name="start"
-						id="start">
-				</div>
-				<div class="layui-inline">
-					<input class="layui-input" placeholder="截止日" name="end" id="end">
-				</div>
-				<div class="layui-inline">
-					<input type="text" name="username" placeholder="请输入用户名"
-						autocomplete="off" class="layui-input">
-				</div>
-				<button class="layui-btn" lay-submit="" lay-filter="sreach">
-					<i class="layui-icon">&#xe615;</i>
-				</button>
-			</form>
-		</div>
-		<div class="weadmin-block">
-			<button class="layui-btn layui-btn-danger" onclick="delAll()">
-				<i class="layui-icon"></i>批量删除
-			</button>
-			<button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html')">
-				<i class="layui-icon"></i>添加
-			</button>
-			<span class="fr" style="line-height: 40px">共有数据：88 条</span>
-		</div>
-		<table class="layui-table">
-			<thead>
-				<tr>
-					<th>
-						<div class="layui-unselect header layui-form-checkbox"
-							lay-skin="primary">
-							<i class="layui-icon">&#xe605;</i>
+	<div id="vcontroller">
+		<!-- 查看角色 -->
+		<div class="weadmin-body" v-show="showList">
+			<fieldset class="layui-elem-field">
+				<legend>查看角色</legend>
+				<div class="layui-field-box">
+					<div class="weadmin-block">
+						<div class="layui-inline">
+							<input type="text" v-model="selectInput" placeholder="请输入角色名"
+								@keyup="selectRole()" autocomplete="off" class="layui-input">
 						</div>
-					</th>
-					<th>ID</th>
-					<th>角色名</th>
-					<th>拥有权限规则</th>
-					<th>描述</th>
-					<th>状态</th>
-					<th>操作</th>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<div class="layui-unselect layui-form-checkbox" lay-skin="primary"
-							data-id='2'>
-							<i class="layui-icon">&#xe605;</i>
+						<button class="layui-btn" lay-submit="" lay-filter="sreach">
+							<i class="layui-icon">&#xe615;</i>
+						</button>
+						<button class="layui-btn layui-btn-danger" @click="deleteSelect()">
+							<i class="layui-icon"></i>批量删除
+						</button>
+						<button class="layui-btn" @click="showAddView()">
+							<i class="layui-icon"></i>添加
+						</button>
+					</div>
+					<table id="laytable" lay-filter="maintable">
+					</table>
+					<div id="barDemo" style="display: none">
+						<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> <a
+							class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<!-- 增加角色 -->
+		<div class="weadmin-body" v-show="showAdd">
+			<fieldset class="layui-elem-field">
+				<legend>新增角色</legend>
+				<div class="layui-field-box">
+					<div class="layui-form">
+						<div class="layui-form-item">
+							<label for="role" class="layui-form-label"> <span
+								class="we-red">*</span>角色
+							</label>
+							<div class="layui-input-inline">
+								<input type="text" id="role" name="role" required=""
+									lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<span class="we-red">*</span>
+							</div>
 						</div>
-					</td>
-					<td>1</td>
-					<td>超级管理员</td>
-					<td>会员列表，问题列表</td>
-					<td>具有至高无上的权利</td>
-					<td class="td-status"><span
-						class="layui-btn layui-btn-normal layui-btn-xs">已启用</span></td>
-					<td class="td-manage"><a onclick="member_stop(this,'10001')"
-						href="javascript:;" title="启用"> <i class="layui-icon">&#xe601;</i>
-					</a> <a title="编辑" onclick="WeAdminShow('编辑','./role-add.html')"
-						href="javascript:;"> <i class="layui-icon">&#xe642;</i>
-					</a> <a title="删除" onclick="member_del(this,'要删除的id')"
-						href="javascript:;"> <i class="layui-icon">&#xe640;</i>
-					</a></td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="page">
-			<div>
-				<a class="prev" href="">&lt;&lt;</a> <a class="num" href="">1</a> <span
-					class="current">2</span> <a class="num" href="">3</a> <a
-					class="num" href="">489</a> <a class="next" href="">&gt;&gt;</a>
-			</div>
+						<div class="layui-form-item">
+							<label for="remark" class="layui-form-label"> <span
+								class="we-red">*</span>描述
+							</label>
+							<div class="layui-input-inline">
+								<input type="text" id="remark" name="remark" required=""
+									lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<span class="we-red">*</span>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="premission" class="layui-form-label"> <span
+								class="we-red">*</span>权限
+							</label>
+							<div class="layui-input-inline">
+								<input type="text" id="premission" required=""
+									@focus="loadPremission('premission','premissionids')"
+									lay-verify="required" autocomplete="off" class="layui-input"
+									readonly="readonly">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<span class="we-red">*</span>
+							</div>
+						</div>
+
+						<div class="layui-form-item layui-hide">
+							<input type="text" id="premissionids" name="premissionadd[0]"
+								class="layui-input" readonly="readonly">
+						</div>
+						<div class="layui-form-item">
+							<label for="L_repass" class="layui-form-label"></label>
+							<button class="layui-btn" lay-submit lay-filter="addRole">增加</button>
+							<button class="layui-btn layui-btn-warm" @click="showListView()">返回</button>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<!-- 编辑角色 -->
+		<div class="weadmin-body" v-show="showEdit">
+			<fieldset class="layui-elem-field">
+				<legend>编辑角色</legend>
+				<div class="layui-field-box">
+					<div class="layui-form">
+						<input type="text" class="layui-hide"
+							v-model="role.id" readonly="readonly">
+						<div class="layui-form-item">
+							<label class="layui-form-label">角色 </label>
+							<div class="layui-input-inline">
+								<input v-model="role.role" type="text" required=""
+									lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">描述 </label>
+							<div class="layui-input-inline">
+								<input v-model="role.remark" type="text" required=""
+									lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+
+						<div class="layui-form-item">
+							<label for="role" class="layui-form-label">权限 </label>
+							<div class="layui-input-inline">
+								<input type="text" id="premission2" required=""
+									@focus="loadPremission('premission2','premissionids2')"
+									lay-verify="required" autocomplete="off" class="layui-input"
+									readonly="readonly">
+							</div>
+						</div>
+
+						<div class="layui-form-item layui-hide">
+							<input type="text" id="premissionids2"
+								v-model="role.premissionadd[0]" class="layui-input"
+								readonly="readonly">
+						</div>
+						<div class="layui-form-item">
+							<label for="L_repass" class="layui-form-label"></label>
+							<button class="layui-btn" lay-submit lay-filter="editRole">修改</button>
+							<button class="layui-btn layui-btn-warm" @click="showListView()">返回</button>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<!-- 选择角色列表 -->
+		<div id="select" style="display: none">
+			<div id="selectbody" class="weadmin-body"></div>
 		</div>
 	</div>
-		<script
+	<script
 		src="${pageContext.request.contextPath}/static/js/admin/role.js"></script>
 </body>
 

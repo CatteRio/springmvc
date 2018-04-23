@@ -3,8 +3,9 @@ package com.yy.utils;
 import java.lang.reflect.Field;
 
 /**
- * @author Rio
- * 2018年4月8日下午8:36:05
+ * 
+ * @author Rio(417168602@qq.com)
+ * @date 2018-04-23 下午2:16:57
  */
 public class ReflectHelper {
     public static Field getFieldByFieldName(Object obj, String fieldName) {

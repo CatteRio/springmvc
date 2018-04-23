@@ -224,7 +224,7 @@
 		</div>
 	</div>
 	<script
-		src="${pageContext.request.contextPath}/static/js/admin/list.js"></script>
+		src="${pageContext.request.contextPath}/static/js/admin/user.js"></script>
 </body>
 
 </html>

@@ -28,4 +28,6 @@ public interface UserMapper {
 	void deleteUserList(List<User> userList);
 
 	void deleteUserRoles(List<Integer> userIds);
+	
+	List<Role> selectAllRoles(Integer id);
 }
