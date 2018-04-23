@@ -62,4 +62,9 @@ public class PremissionService implements IPremissionService {
 		return premissionMapper.listAll();
 	}
 
+	@Override
+	public List<Premission> selectFirstGeneration() {
+		return premissionMapper.selectFirstGeneration();
+	}
+
 }

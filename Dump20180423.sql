@@ -24,9 +24,12 @@ DROP TABLE IF EXISTS `premission`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `premission` (
   `id` int(11) NOT NULL,
+  `parentid` int(11) NOT NULL,
   `content` varchar(45) NOT NULL,
+  `path` varchar(255) NOT NULL,
   `remark` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `content_UNIQUE` (`content`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,7 +39,7 @@ CREATE TABLE `premission` (
 
 LOCK TABLES `premission` WRITE;
 /*!40000 ALTER TABLE `premission` DISABLE KEYS */;
-INSERT INTO `premission` VALUES (1,'管理员管理',NULL),(2,'文章管理',NULL),(3,'系统管理',NULL);
+INSERT INTO `premission` VALUES (1,0,'管理员管理','1',NULL),(2,0,'文章管理','1',NULL),(3,0,'系统管理','1',NULL),(4,1,'用户管理','/aaaa',NULL),(5,1,'角色管理','1',NULL),(6,1,'权限管理','1',NULL),(7,4,'数字事实上','1',NULL);
 /*!40000 ALTER TABLE `premission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,4 +168,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-23 14:17:42
+-- Dump completed on 2018-04-23 21:30:37

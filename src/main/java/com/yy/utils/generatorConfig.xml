@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>  
     <!-- 数据库驱动-->    
-    <classPathEntry  location="C:\Users\Rio\.m2\repository\mysql\mysql-connector-java\5.1.46\mysql-connector-java-5.1.46.jar"/>    
+    <classPathEntry  location="C:\Users\Rio\.m2\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar"/>    
     <context id="DB2Tables"  targetRuntime="MyBatis3">    
         <commentGenerator>    
             <property name="suppressDate" value="true"/>    
@@ -29,6 +29,6 @@
             <property name="enableSubPackages" value="true"/>    
         </javaClientGenerator>    
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->    
-        <table tableName="role" domainObjectName="Role" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>  
+        <table tableName="premission" domainObjectName="Premission" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>  
     </context>    
 </generatorConfiguration>  

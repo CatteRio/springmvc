@@ -23,4 +23,5 @@ public interface IPremissionService {
 	int updateByPrimaryKey(Premission record);
 
 	List<Premission> listAll();
+	List<Premission> selectFirstGeneration();
 }

@@ -724,3 +724,24 @@ table th, table td {
 .my-list-iteam {
 	padding: 5px;
 }
+
+.my-layui-block {
+	width: 200px;
+	height: 280px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	overflow: auto;
+	display: inline-block;
+}
+.my-layui-nodeview{
+	display: inline-block;
+    height: 260px;
+    width: 400px;
+    padding: 40px 20px 0px 20px;
+    margin-left: 10px;
+    vertical-align: top;
+    margin-bottom: 10px;
+    line-height: 22px;
+    border: 1px solid #ddd;
+    border-left: 5px solid #0078AD;
+}

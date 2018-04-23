@@ -3,12 +3,25 @@
 <mapper namespace="com.yy.mapper.PremissionMapper">
 	<resultMap id="BaseResultMap" type="com.yy.pojo.Premission">
 		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="parentid" jdbcType="INTEGER" property="parentid" />
 		<result column="content" jdbcType="VARCHAR" property="content" />
+		<result column="path" jdbcType="VARCHAR" property="path" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<collection column="id" property="children" javaType="list"
+			select="selectChildren"></collection>
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, content, remark
+		id, parentid, content, path, remark
 	</sql>
+
+	<select id="selectChildren" parameterType="INTEGER" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from premission where
+		parentid = #{id}
+	</select>
+
+
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
 		select
@@ -23,12 +36,12 @@
 	</delete>
 	<insert id="insert" parameterType="com.yy.pojo.Premission">
 		insert into premission (id,
-		content, remark
-		)
+		parentid, content,
+		path, remark)
 		values (#{id,jdbcType=INTEGER},
+		#{parentid,jdbcType=INTEGER},
 		#{content,jdbcType=VARCHAR},
-		#{remark,jdbcType=VARCHAR}
-		)
+		#{path,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="com.yy.pojo.Premission">
 		insert into premission
@@ -36,8 +49,14 @@
 			<if test="id != null">
 				id,
 			</if>
+			<if test="parentid != null">
+				parentid,
+			</if>
 			<if test="content != null">
 				content,
+			</if>
+			<if test="path != null">
+				path,
 			</if>
 			<if test="remark != null">
 				remark,
@@ -47,8 +66,14 @@
 			<if test="id != null">
 				#{id,jdbcType=INTEGER},
 			</if>
+			<if test="parentid != null">
+				#{parentid,jdbcType=INTEGER},
+			</if>
 			<if test="content != null">
 				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="path != null">
+				#{path,jdbcType=VARCHAR},
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
@@ -58,8 +83,14 @@
 	<update id="updateByPrimaryKeySelective" parameterType="com.yy.pojo.Premission">
 		update premission
 		<set>
+			<if test="parentid != null">
+				parentid = #{parentid,jdbcType=INTEGER},
+			</if>
 			<if test="content != null">
 				content = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="path != null">
+				path = #{path,jdbcType=VARCHAR},
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
@@ -69,11 +100,23 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.yy.pojo.Premission">
 		update premission
-		set content = #{content,jdbcType=VARCHAR},
+		set parentid = #{parentid,jdbcType=INTEGER},
+		content =
+		#{content,jdbcType=VARCHAR},
+		path = #{path,jdbcType=VARCHAR},
 		remark =
 		#{remark,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+
+
+
+	<select id="selectFirstGeneration" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from premission where parentid=0
+	</select>
+
 
 	<select id="listAll" resultMap="BaseResultMap">
 		select

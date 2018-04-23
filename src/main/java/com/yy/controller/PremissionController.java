@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yy.service.impl.PremissionService;
+import com.yy.service.IPremissionService;
 import com.yy.utils.Reply;
 
 /**
@@ -17,10 +17,13 @@ import com.yy.utils.Reply;
 public class PremissionController {
 
 	@Autowired
-	private PremissionService premissionService;
+	private IPremissionService premissionService;
 
 	@RequestMapping("/all/list.do")
 	public Reply getPremissions(Integer id) {
-		return Reply.ok(premissionService.listAll());
+		if (id != null && id != 0) {
+			return Reply.ok(premissionService.selectByPrimaryKey(id));
+		}
+		return Reply.ok(premissionService.selectFirstGeneration());
 	}
 }

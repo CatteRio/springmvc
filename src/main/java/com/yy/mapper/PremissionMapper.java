@@ -16,9 +16,11 @@ public interface PremissionMapper {
 	int updateByPrimaryKeySelective(Premission record);
 
 	int updateByPrimaryKey(Premission record);
-	
+
 	List<Premission> listAll();
+
+	List<Premission> selectFirstGeneration();
 	
 	
-	
+	List<Premission> selectChildren();
 }
