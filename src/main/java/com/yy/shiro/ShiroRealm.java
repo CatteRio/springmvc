@@ -11,6 +11,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.yy.pojo.Premission;
 import com.yy.pojo.Role;
 import com.yy.pojo.User;
 import com.yy.service.IUserService;
@@ -31,10 +32,20 @@ public class ShiroRealm extends AuthorizingRealm {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		for (Role role : user.getRoles()) {
 			info.addRole(role.getRole());
+			for(Premission premission : role.getPremissions()) {
+				addPremission(info,premission);
+			}
 		}
 		return info;
 	}
-
+	
+	private void addPremission(SimpleAuthorizationInfo info,Premission premission) {
+		info.addStringPermission(premission.getContent());
+		for (Premission child : premission.getChildren()) {
+			addPremission(info,child);
+		}
+	}
+	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		String userName = (String) token.getPrincipal();

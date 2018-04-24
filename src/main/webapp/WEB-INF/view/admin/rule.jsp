@@ -20,42 +20,50 @@
 						<div id="laytree"></div>
 					</div>
 					<div class="my-layui-nodeview" v-show="showView">
-						<div class="layui-form">
-							<input type="text" class="layui-hide" v-model="premission.id" />
-							<input type="text" class="layui-hide"
-								v-model="premission.parentid" />
-							<div class="layui-form-item">
-								<label class="layui-form-label">名称</label>
-								<div class="layui-input-block">
-									<input type="text" placeholder="请输入名称" autocomplete="off"
-										v-model="premission.content" lay-verify="required"
-										class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">路径</label>
-								<div class="layui-input-block">
-									<input type="text" placeholder="请输入路径" autocomplete="off"
-										v-model="premission.path" lay-verify="required"
-										class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">备注</label>
-								<div class="layui-input-block">
-									<input type="text" placeholder="请输入备注" autocomplete="off"
-										v-model="premission.remark" class="layui-input">
-								</div>
-							</div>
+						<fieldset class="layui-elem-field layui-field-title">
+							<legend>当前节点-{{currentPremission.content}}</legend>
+							<div class="layui-field-box">
+								<div class="layui-form">
+									<input type="text" class="layui-hide" v-model="premission.id" />
+									<input type="text" class="layui-hide"
+										v-model="premission.parentid" />
+									<div class="layui-form-item">
+										<label class="layui-form-label">名称</label>
+										<div class="layui-input-block">
+											<input type="text" placeholder="请输入名称" autocomplete="off"
+												v-model="premission.content" lay-verify="required"
+												class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">路径</label>
+										<div class="layui-input-block">
+											<input type="text" placeholder="请输入路径" autocomplete="off"
+												v-model="premission.path" lay-verify="required"
+												class="layui-input">
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">备注</label>
+										<div class="layui-input-block">
+											<input type="text" placeholder="请输入备注" autocomplete="off"
+												v-model="premission.remark" class="layui-input">
+										</div>
+									</div>
 
-							<div class="layui-form-item">
-								<div class="layui-input-block">
-									<button class="layui-btn" lay-submit>新增</button>
-									<button class="layui-btn" lay-submit>修改</button>
-									<button class="layui-btn layui-btn-warm">删除</button>
+									<div class="layui-form-item">
+										<div class="layui-input-block">
+											<button class="layui-btn" lay-submit lay-filter="addRule">新增</button>
+											<button class="layui-btn" lay-submit lay-filter="updateRule">修改</button>
+											<button class="layui-btn layui-btn-warm" lay-submit
+												lay-filter="deleteRule">删除</button>
+											<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
+						</fieldset>
+
 					</div>
 				</div>
 			</fieldset>

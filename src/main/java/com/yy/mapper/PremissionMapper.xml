@@ -114,7 +114,7 @@
 	<select id="selectFirstGeneration" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from premission where parentid=0
+		from premission where parentid is null
 	</select>
 
 

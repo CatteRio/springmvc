@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -90,7 +91,7 @@ public class UserController {
 		return Reply.ok("添加成功");
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
+	@RequiresPermissions(value = { "管理员管理", "角色管理" }, logical = Logical.OR)
 	@RequestMapping("/update.do")
 	public Reply updateUserInfo(User user,@RequestParam(value = "roleadd[]") Integer[] roleadd) {
 		User backUser = userService.findUserByUserName(user.getUsername());

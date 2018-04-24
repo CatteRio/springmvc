@@ -1,16 +1,42 @@
+var treeOption = {
+	elem : '#laytree',
+	nodes : getNodes(),
+	click : function(node) {
+		vm.loadPremission(node);
+		vm.currentPremission = cloneObj(vm.premission);
+		vm.showView = true; // node即为当前点击的节点数据
+	}
+};
 layui.use('tree', function() {
-	layui.tree({
-		elem : '#laytree',
-		nodes : getNodes(),
-		click : function(node) {
-			vm.loadPremission(node);
-			vm.showView = true; // node即为当前点击的节点数据
-		}
+	layui.tree(treeOption);
+});
+layui.use([ 'form' ], function() {
+	var form = layui.form;
+	form.verify();
+
+	// 监听提交
+	form.on('submit(addRule)', function(data) {
+		vm.addRule();
+		return false;
 	});
+	// 监听提交
+	form.on('submit(updateRule)', function(data) {
+		vm.updateRule();
+		return false;
+	});
+	// 监听提交
+	form.on('submit(deleteRule)', function(data) {
+		vm.deleteRule();
+		return false;
+	});
+
 });
 var vm = new Vue({
 	el : '#vcontroller',
 	data : {
+		currentPremission : {
+
+		},
 		showView : false,
 		premission : {
 			id : "",
@@ -34,6 +60,47 @@ var vm = new Vue({
 					vm.premission.content = premission.content;
 					vm.premission.path = premission.path;
 					vm.premission.remark = premission.remark;
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(JSON.parse(jqXHR.responseText).message);
+				}
+			});
+		},
+		addRule : function() {
+			vm.premission.parentid = vm.premission.id;
+			vm.premission.id = null;
+			$.ajax({
+				type : "post",
+				url : baseApiPath + "/premission/add.do",
+				data : vm.premission,
+				success : function(data) {
+					alert(data.message);
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(JSON.parse(jqXHR.responseText).message);
+				}
+			});
+		},
+		updateRule : function() {
+			$.ajax({
+				type : "post",
+				url : baseApiPath + "/premission/update.do",
+				data : vm.premission,
+				success : function(data) {
+					alert(data.message);
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(JSON.parse(jqXHR.responseText).message);
+				}
+			});
+		},
+		deleteRule : function() {
+			$.ajax({
+				type : "post",
+				url : baseApiPath + "/premission/delete.do",
+				data : vm.premission,
+				success : function(data) {
+					alert(data.message);
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert(JSON.parse(jqXHR.responseText).message);
