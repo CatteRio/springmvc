@@ -34,18 +34,18 @@ var tableOption = {
 	}, {
 		field : 'premissionid',
 		title : '权限',
-		templet: function(d){
+		templet : function(d) {
 			d = d.premissions;
 			var premissions = "";
-			for(var i = 0;i <d.length;i++){
+			for (var i = 0; i < d.length; i++) {
 				premission = d[i];
-				premissions = premissions +  premission.content;
-				if(i<d.length-1){
-					premissions = premissions+",";
+				premissions = premissions + premission.content;
+				if (i < d.length - 1) {
+					premissions = premissions + ",";
 				}
 			}
-	        return premissions;
-	    }
+			return premissions;
+		}
 	}, {
 		fixed : 'right',
 		width : 150,
@@ -70,7 +70,7 @@ layui.use('table', function() {
 				$.ajax({
 					type : "post",
 					url : baseApiPath + "/role/delete.do",
-					data : "id="+data.id,
+					data : "id=" + data.id,
 					success : function(data) {
 						alert(data.message);
 						tableins.reload();
@@ -89,16 +89,15 @@ layui.use('table', function() {
 					var premissions = role.premissions;
 					var premissionNames = "";
 					var premissionadds = [];
-					for(var i = 0;i <premissions.length;i++){
+					for (var i = 0; i < premissions.length; i++) {
 						premission = premissions[i];
-						premissionNames = premissionNames +  premission.content;
+						premissionNames = premissionNames + premission.content;
 						premissionadds.push(premission.id);
-						if(i<premissions.length-1){
-							premissionNames = premissionNames+",";
+						if (i < premissions.length - 1) {
+							premissionNames = premissionNames + ",";
 						}
 					}
-					
-					
+
 					$('#premission2').val(premissionNames);
 					vm.role.id = role.id;
 					vm.role.role = role.role;
@@ -138,9 +137,9 @@ var vm = new Vue({
 		deleteSelect : function() {
 			var table = layui.table;
 			var checkStatus = table.checkStatus('base');
-			if(checkStatus.data.length == 0){
+			if (checkStatus.data.length == 0) {
 				alert("请选中至少一条记录");
-				return ;
+				return;
 			}
 			confirm('确认删除所选角色？', function(index) {
 				$.ajax({
@@ -176,53 +175,59 @@ var vm = new Vue({
 			this.showList = false;
 			this.showEdit = true;
 		},
-		loadPremission : function(premission1,premission2) {
-			//console.log(role1,role2)
+		loadPremission : function(premission1, premission2) {
+			// console.log(role1,role2)
 			$.ajax({
 				type : "post",
 				url : baseApiPath + "/premission/all/list.do",
 				success : function(data) {
-					alreadyRoles = $('#'+premission1).val().split(",")
-					var premissions = data.data;
-					var html = "";
-					for(j = 0; j < premissions.length; j++) {
-						var premission = premissions[j];
-						html = html + "<div class=\"layui-inline my-list-iteam\">\r\n";
-						html = html + "<input type=\"checkbox\" premission=\""+premission.content+"\" class=\"chklist\" value=\""+premission.id+"\" ";
-						if(alreadyRoles.contains(premission.content)){
-							html = html +"checked=\"checked\"";
+					var setting = {
+						check : {
+							enable : true
+						},
+						data : {
+							simpleData : {
+								enable : true
+							}
 						}
-						html = html +"/>\r\n";
-						html = html + "<label class=\"chkbox\"> \r\n"
-						html = html + "<span class=\"check-image\"></span>  \r\n"
-						html = html + "<span class=\"radiobox-content\">"+premission.content+"</span>  \r\n"
-						html = html + "</label></div> \r\n"
+					};
+					var zNodes = data.data;
+					var selectedRoles = $('#'+premission1).val().split(",");
+					for ( var index in zNodes) {
+						traverseTree(zNodes[index],selectedRoles);
 					}
-					$('#selectbody').html(html);
-					$(".chklist").labelauty("chklist", "check");
+					setting.check.chkboxType = {
+						"Y" : "ps",
+						"N" : "ps"
+					};
+					$.fn.zTree.init($("#ztree"), setting, zNodes);
 					layer.open({
 						type : 1,
 						title : "选择权限",
-						area : [ '540px', '380px' ],
+						area : [ '320px', '380px' ],
 						skin : 'layui-layer-rim', // 加上边框
 						content : $('#select'),
 						btn : [ '确定', '取消' ],
 						yes : function(index, layero) {
+							var zTreeOjb = $.fn.zTree.getZTreeObj("ztree");
+							var checkedNodes = zTreeOjb.getCheckedNodes();
 							var premissions = [];
 							var premissionids = [];
-							$('#selectbody input:checked').each(function(){
-								premissions.push($(this).attr('premission'));
-								premissionids.push($(this).val());
-							});
-							var premissionVal="";
-							for(var i=0;i<premissions.length;i++){
+							for (i = 0; i < checkedNodes.length; i++) {
+								premissions.push(checkedNodes[i].name);
+								premissionids.push(checkedNodes[i].id);
+							}
+							console.log(premissions);
+							console.log(premissionids);
+							var premissionVal = "";
+							for (var i = 0; i < premissions.length; i++) {
 								premissionVal = premissionVal + premissions[i];
-								if(i<premissions.length-1){
-									premissionVal = premissionVal+",";
+								if (i < premissions.length - 1) {
+									premissionVal = premissionVal + ",";
 								}
 							}
-							$('#'+premission1).val(premissionVal);
-							$('#'+premission2).val(premissionids);
+							$('#' + premission1).val(premissionVal);
+							$('#' + premission2).val(premissionids);
 							vm.role.premissionadd = premissionids;
 							layer.close(index);
 						},
@@ -231,11 +236,70 @@ var vm = new Vue({
 						},
 						btnAlign : 'c'
 					});
+
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert(JSON.parse(jqXHR.responseText).message);
 				}
 			});
+
+			// alreadyRoles = $('#'+premission1).val().split(",")
+			// var premissions = data.data;
+			// var html = "";
+			// for(j = 0; j < premissions.length; j++) {
+			// var premission = premissions[j];
+			// html = html + "<div class=\"layui-inline my-list-iteam\">\r\n";
+			// html = html + "<input type=\"checkbox\"
+			// premission=\""+premission.content+"\" class=\"chklist\"
+			// value=\""+premission.id+"\" ";
+			// if(alreadyRoles.contains(premission.content)){
+			// html = html +"checked=\"checked\"";
+			// }
+			// html = html +"/>\r\n";
+			// html = html + "<label class=\"chkbox\"> \r\n"
+			// html = html + "<span class=\"check-image\"></span> \r\n"
+			// html = html + "<span
+			// class=\"radiobox-content\">"+premission.content+"</span> \r\n"
+			// html = html + "</label></div> \r\n"
+			// }
+			// $('#selectbody').html(html);
+			// $(".chklist").labelauty("chklist", "check");
+			// layer.open({
+			// type : 1,
+			// title : "选择权限",
+			// area : [ '540px', '380px' ],
+			// skin : 'layui-layer-rim', // 加上边框
+			// content : $('#select'),
+			// btn : [ '确定', '取消' ],
+			// yes : function(index, layero) {
+			// var premissions = [];
+			// var premissionids = [];
+			// $('#selectbody input:checked').each(function(){
+			// premissions.push($(this).attr('premission'));
+			// premissionids.push($(this).val());
+			// });
+			// var premissionVal="";
+			// for(var i=0;i<premissions.length;i++){
+			// premissionVal = premissionVal + premissions[i];
+			// if(i<premissions.length-1){
+			// premissionVal = premissionVal+",";
+			// }
+			// }
+			// $('#'+premission1).val(premissionVal);
+			// $('#'+premission2).val(premissionids);
+			// vm.role.premissionadd = premissionids;
+			// layer.close(index);
+			// },
+			// btn2 : function(index, layero) {
+			// // alert("取消了");
+			// },
+			// btnAlign : 'c'
+			// });
+			// },
+			// error : function(jqXHR, textStatus, errorThrown) {
+			// alert(JSON.parse(jqXHR.responseText).message);
+			// }
+			// });
 		},
 		editRole : function() {
 			$.ajax({
@@ -257,7 +321,6 @@ var vm = new Vue({
 		}
 	}
 })
-
 // 新增用户部分代码
 layui.use([ 'form' ], function() {
 	var form = layui.form;
@@ -297,3 +360,25 @@ layui.use([ 'form' ], function() {
 	});
 
 });
+// 遍历单个节点
+function addNodeName(node,selectedRoles) {
+	node['name'] = node['content'];
+	if(selectedRoles.contains(node['name'])){
+		node["checked"]=true;
+		node["open"]=true
+	}
+}
+
+// 递归遍历树
+function traverseTree(node,selectedRoles) {
+	if (!node) {
+		return;
+	}
+	addNodeName(node,selectedRoles);
+	if (node.children && node.children.length > 0) {
+		var i = 0;
+		for (i = 0; i < node.children.length; i++) {
+			this.traverseTree(node.children[i],selectedRoles);
+		}
+	}
+}

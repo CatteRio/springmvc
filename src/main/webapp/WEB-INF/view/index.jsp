@@ -1,6 +1,15 @@
+<%@page import="com.yy.utils.SpringContextUtils"%>
+<%@page import="com.yy.service.impl.PremissionService"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.yy.pojo.Premission"%>
+<%@page import="java.util.List"%>
+<%@page import="com.yy.pojo.Role"%>
+<%@page import="com.yy.pojo.User"%>
+<%@page import="org.apache.shiro.SecurityUtils"%>
 <%@ page language="java" contentType="text/html; charset=utf8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -62,6 +71,25 @@
 	<div class="left-nav">
 		<div id="side-nav">
 			<ul id="nav">
+				<%-- <%
+					PremissionService premissionService = SpringContextUtils.getBean(PremissionService.class);
+					
+					
+					User user = (User) SecurityUtils.getSubject().getPrincipal();
+					List<Role> roles = user.getRoles();
+					List<Premission> premissions = new ArrayList<>();
+					for(Role role : roles){
+						premissions.addAll(role.getPremissions());
+					}
+					request.setAttribute("premissions", premissions);
+				%>
+				<c:forEach var="premission" items="${premissions}">
+					<li>${premission.content}</li>
+				</c:forEach> --%>
+
+
+
+
 				<li><a href="javascript:;"> <i class="iconfont">&#xe6b8;</i>
 						<cite>会员管理</cite> <i class="iconfont nav_right">&#xe697;</i>
 				</a>

@@ -105,8 +105,8 @@
 				<legend>编辑角色</legend>
 				<div class="layui-field-box">
 					<div class="layui-form">
-						<input type="text" class="layui-hide"
-							v-model="role.id" readonly="readonly">
+						<input type="text" class="layui-hide" v-model="role.id"
+							readonly="readonly">
 						<div class="layui-form-item">
 							<label class="layui-form-label">角色 </label>
 							<div class="layui-input-inline">
@@ -149,9 +149,14 @@
 		</div>
 		<!-- 选择角色列表 -->
 		<div id="select" style="display: none">
-			<div id="selectbody" class="weadmin-body"></div>
+			<div id="selectbody" class="weadmin-body">
+
+				<div id="ztree" class="ztree"></div>
+			</div>
 		</div>
 	</div>
+
+
 	<script
 		src="${pageContext.request.contextPath}/static/js/admin/role.js"></script>
 </body>
