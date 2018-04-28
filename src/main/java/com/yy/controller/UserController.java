@@ -19,6 +19,7 @@ import com.yy.utils.CommonUtils;
 import com.yy.utils.PageInfo;
 import com.yy.utils.PageReply;
 import com.yy.utils.Reply;
+import com.yy.utils.ShiroUtils;
 
 /**
  * 
@@ -32,7 +33,6 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/info.do")
 	public Reply getUserInfo(int id) {
 		User user = userService.findUserById(id);
@@ -42,7 +42,6 @@ public class UserController {
 		return Reply.ok(user);
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/list.do")
 	public PageReply getUserList(int page, int limit, String username) {
 		PageInfo pageInfo = new PageInfo();
@@ -56,21 +55,18 @@ public class UserController {
 		return PageReply.ok(pageInfo.getTotalResult(), userList);
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/delete.do")
 	public Reply deleteUser(User user) {
 		userService.deleteUser(user);
 		return Reply.ok("删除成功");
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/deletelist.do")
 	public Reply deleteUserList(@RequestBody List<User> users) {
 		userService.deleteUserList(users);
 		return Reply.ok("删除成功");
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/add.do")
 	public Reply addUser(User frontUser, @RequestParam(value = "roleadd[0]") Integer[] roleadd) {
 		User user = userService.findUserByUserName(frontUser.getUsername());
@@ -91,7 +87,6 @@ public class UserController {
 		return Reply.ok("添加成功");
 	}
 
-	@RequiresPermissions(value = { "管理员管理", "角色管理" }, logical = Logical.OR)
 	@RequestMapping("/update.do")
 	public Reply updateUserInfo(User user,@RequestParam(value = "roleadd[]") Integer[] roleadd) {
 		User backUser = userService.findUserByUserName(user.getUsername());
@@ -117,6 +112,7 @@ public class UserController {
 			}
 		}
 		userService.updateUser(user);
+		ShiroUtils.clearCachedAuthorizationInfo();
 		return Reply.ok("修改成功");
 	}
 

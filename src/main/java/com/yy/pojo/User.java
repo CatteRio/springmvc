@@ -25,4 +25,6 @@ public class User {
 	@JSONField(serialize=false)
 	private String salt;
 	private List<Role> roles;
+	@JSONField(serialize=false)
+	private List<Premission> premissions;
 }

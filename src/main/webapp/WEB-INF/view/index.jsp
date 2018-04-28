@@ -1,3 +1,4 @@
+<%@page import="com.yy.utils.ShiroUtils"%>
 <%@page import="com.yy.utils.SpringContextUtils"%>
 <%@page import="com.yy.service.impl.PremissionService"%>
 <%@page import="java.util.ArrayList"%>
@@ -21,7 +22,7 @@
 	<!-- 顶部开始 -->
 	<div class="container">
 		<div class="logo">
-			<a href="./index.do">WeAdmin v1.0</a>
+			<a href="./index.do">后台管理系统</a>
 		</div>
 		<div class="left_open">
 			<i title="展开左侧栏" class="iconfont">&#xe699;</i>
@@ -71,126 +72,13 @@
 	<div class="left-nav">
 		<div id="side-nav">
 			<ul id="nav">
-				<%-- <%
-					PremissionService premissionService = SpringContextUtils.getBean(PremissionService.class);
-					
-					
-					User user = (User) SecurityUtils.getSubject().getPrincipal();
-					List<Role> roles = user.getRoles();
-					List<Premission> premissions = new ArrayList<>();
-					for(Role role : roles){
-						premissions.addAll(role.getPremissions());
-					}
+				<%--强行调用shiro方法获取用户信息--%>
+				<shiro:hasRole name=""></shiro:hasRole>
+				<%
+					List<Premission> premissions = ShiroUtils.getUser().getPremissions();
 					request.setAttribute("premissions", premissions);
 				%>
-				<c:forEach var="premission" items="${premissions}">
-					<li>${premission.content}</li>
-				</c:forEach> --%>
-
-
-
-
-				<li><a href="javascript:;"> <i class="iconfont">&#xe6b8;</i>
-						<cite>会员管理</cite> <i class="iconfont nav_right">&#xe697;</i>
-				</a>
-					<ul class="sub-menu">
-						<li><a _href="./member/list.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>会员列表</cite>
-
-						</a></li>
-						<li><a _href="./member/del.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>会员删除</cite>
-
-						</a></li>
-						<li><a href="javascript:;"> <i class="iconfont">&#xe70b;</i>
-								<cite>会员管理</cite> <i class="iconfont nav_right">&#xe697;</i>
-						</a>
-							<ul class="sub-menu">
-								<li><a _href="./member/addInput.do"> <i
-										class="iconfont">&#xe6a7;</i> <cite>输入框操作</cite>
-								</a></li>
-								<li><a _href="./404.do"> <i class="iconfont">&#xe6a7;</i>
-										<cite>三级菜单演示</cite>
-								</a></li>
-								<li><a _href="./404.do"> <i class="iconfont">&#xe6a7;</i>
-										<cite>导航菜单演示</cite>
-								</a></li>
-							</ul></li>
-					</ul></li>
-				<li><a href="javascript:;"> <i class="iconfont">&#xe705;</i>
-						<cite>文章管理</cite> <i class="iconfont nav_right">&#xe697;</i>
-				</a>
-					<ul class="sub-menu">
-						<li><a _href="./article/list.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>文章列表</cite>
-						</a></li>
-						<li><a _href="./article/category.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>分类管理</cite>
-						</a></li>
-					</ul></li>
-				<li><a href="javascript:;"> <i class="iconfont">&#xe723;</i>
-						<cite>订单管理</cite> <i class="iconfont nav_right">&#xe697;</i>
-				</a>
-					<ul class="sub-menu">
-						<li><a _href="./order/list.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>订单列表</cite>
-						</a></li>
-					</ul></li>
-
-				<shiro:hasPermission name="管理员管理">
-					<li><a href="javascript:;"> <i class="iconfont">&#xe726;</i>
-							<cite>管理员管理</cite> <i class="iconfont nav_right">&#xe697;</i>
-					</a>
-						<ul class="sub-menu">
-							<shiro:hasPermission name="用户管理">
-								<li><a _href="./admin/user.do"> <i class="iconfont">&#xe6a7;</i>
-										<cite>用户管理</cite>
-								</a></li>
-							</shiro:hasPermission>
-							<shiro:hasPermission name="角色管理">
-								<li><a _href="./admin/role.do"> <i class="iconfont">&#xe6a7;</i>
-										<cite>角色管理</cite>
-								</a></li>
-							</shiro:hasPermission>
-							<shiro:hasPermission name="权限管理">
-								<li><a _href="./admin/rule.do"> <i class="iconfont">&#xe6a7;</i>
-										<cite>权限管理</cite>
-								</a></li>
-							</shiro:hasPermission>
-						</ul></li>
-				</shiro:hasPermission>
-				<li><a href="javascript:;"> <i class="iconfont">&#xe6ce;</i>
-						<cite>系统统计</cite> <i class="iconfont nav_right">&#xe697;</i>
-				</a>
-					<ul class="sub-menu">
-						<li><a _href="./echarts/echarts1.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>拆线图</cite>
-						</a></li>
-						<li><a _href="./echarts/echarts2.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>柱状图</cite>
-						</a></li>
-						<li><a _href="./echarts/echarts3.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>地图</cite>
-						</a></li>
-						<li><a _href="./echarts/echarts4.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>饼图</cite>
-						</a></li>
-						<li><a _href="./echarts/echarts5.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>雷达图</cite>
-						</a></li>
-						<li><a _href="./echarts/echarts6.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>k线图</cite>
-						</a></li>
-						<li><a _href="./echarts/echarts7.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>热力图</cite>
-						</a></li>
-						<li><a _href="./echarts/echarts8.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>仪表图</cite>
-						</a></li>
-						<li><a _href="./echarts/echarts9.do"> <i class="iconfont">&#xe6a7;</i>
-								<cite>地图DIY实例</cite>
-						</a></li>
-					</ul></li>
+				<jsp:include page="menu.jsp" />
 			</ul>
 		</div>
 	</div>
@@ -215,10 +103,10 @@
 	<!-- 右侧主体结束 -->
 	<!-- 中部结束 -->
 	<!-- 底部开始 -->
-	<div class="footer">
+	<!-- <div class="footer">
 		<div class="copyright">Copyright ©2018 WeAdmin v1.0 All Rights
 			Reserved</div>
-	</div>
+	</div> -->
 	<!-- 底部结束 -->
 	<script type="text/javascript">
 		layui.config({

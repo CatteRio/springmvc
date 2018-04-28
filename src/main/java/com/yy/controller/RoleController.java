@@ -17,6 +17,7 @@ import com.yy.service.IRoleService;
 import com.yy.utils.PageInfo;
 import com.yy.utils.PageReply;
 import com.yy.utils.Reply;
+import com.yy.utils.ShiroUtils;
 
 /**
  * 
@@ -35,7 +36,6 @@ public class RoleController {
 		return Reply.ok(roleService.selectAll());
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/list.do")
 	public PageReply getRolesLimit(int page, int limit, String role) {
 		PageInfo pageInfo = new PageInfo();
@@ -49,21 +49,20 @@ public class RoleController {
 		return PageReply.ok(pageInfo.getTotalResult(), roleList);
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/delete.do")
 	public Reply deleteRole(Role role) {
 		roleService.deleteByPrimaryKey(role.getId());
+		ShiroUtils.clearCachedAuthorizationInfo();
 		return Reply.ok("删除成功");
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/deletelist.do")
 	public Reply deleteRoleList(@RequestBody List<Role> roles) {
 		roleService.deleteRoleList(roles);
+		ShiroUtils.clearCachedAuthorizationInfo();
 		return Reply.ok("删除成功");
 	}
 
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/add.do")
 	public Reply addRole(Role frontRole, @RequestParam(value = "premissionadd[0]") Integer[] premissionadd) {
 		Role role = roleService.selectByRoleName(frontRole.getRole());
@@ -84,7 +83,6 @@ public class RoleController {
 
 	
 	
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/info.do")
 	public Reply getRoleInfo(int id) {
 		Role role = roleService.selectByPrimaryKey(id);
@@ -96,7 +94,6 @@ public class RoleController {
 	
 	
 	
-	@RequiresRoles(value = { "超级管理员", "管理员" }, logical = Logical.OR)
 	@RequestMapping("/update.do")
 	public Reply updateRole(Role role,@RequestParam(value = "premissionadd[]") Integer[] premissionadd) {
 		Role backRole = roleService.selectByRoleName(role.getRole());
@@ -112,6 +109,7 @@ public class RoleController {
 		role.setPremissions(premisisonList);
 		
 		roleService.updateByPrimaryKey(role);
+		ShiroUtils.clearCachedAuthorizationInfo();
 		return Reply.ok("修改成功");
 	}
 	

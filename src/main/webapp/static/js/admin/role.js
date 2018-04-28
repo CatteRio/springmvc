@@ -380,5 +380,7 @@ function traverseTree(node,selectedRoles) {
 		for (i = 0; i < node.children.length; i++) {
 			this.traverseTree(node.children[i],selectedRoles);
 		}
+	}else{
+		delete node.children;
 	}
 }

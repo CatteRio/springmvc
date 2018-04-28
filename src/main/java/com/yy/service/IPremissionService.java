@@ -24,4 +24,6 @@ public interface IPremissionService {
 
 	List<Premission> listAll();
 	List<Premission> selectFirstGeneration();
+	
+	List<Premission> selectPremissionByUserId(Integer id);
 }

@@ -16,7 +16,7 @@
 			select="selectAllRoles"></collection>
 	</resultMap>
 
-	<resultMap id="Role" type="com.yy.pojo.Role">
+	<!-- <resultMap id="Role" type="com.yy.pojo.Role">
 		<id column="id" jdbcType="INTEGER" property="id" />
 		<result column="role" jdbcType="VARCHAR" property="role" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -33,17 +33,17 @@
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<collection column="id" property="children" javaType="list"
 			select="selectChildren"></collection>
-	</resultMap>
+	</resultMap> -->
 
 
-	<select id="selectAllRoles" parameterType="INTEGER" resultMap="Role">
+	<select id="selectAllRoles" parameterType="INTEGER" resultType="Role">
 		select id,role,remark
 		from role where id in (select user_role.roleid
 		from user_role where
 		user_role.userid=#{id})
 	</select>
 
-	<select id="selectAllPremission" parameterType="INTEGER"
+<!-- 	<select id="selectAllPremission" parameterType="INTEGER"
 		resultMap="Premission">
 		select id,content,remark
 		from premission where id in (select
@@ -57,7 +57,7 @@
 		id, parentid, content, path, remark
 		from premission where
 		parentid = #{id}
-	</select>
+	</select> -->
 
 
 

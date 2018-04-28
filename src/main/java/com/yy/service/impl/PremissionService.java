@@ -22,49 +22,47 @@ public class PremissionService implements IPremissionService {
 
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
 		return premissionMapper.deleteByPrimaryKey(id);
 	}
 
 	@Override
 	public int insert(Premission record) {
-		// TODO Auto-generated method stub
 		return premissionMapper.insert(record);
 	}
 
 	@Override
 	public int insertSelective(Premission record) {
-		// TODO Auto-generated method stub
 		return premissionMapper.insertSelective(record);
 	}
 
 	@Override
 	public Premission selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
 		return premissionMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
 	public int updateByPrimaryKeySelective(Premission record) {
-		// TODO Auto-generated method stub
 		return premissionMapper.updateByPrimaryKeySelective(record);
 	}
 
 	@Override
 	public int updateByPrimaryKey(Premission record) {
-		// TODO Auto-generated method stub
 		return premissionMapper.updateByPrimaryKey(record);
 	}
 
 	@Override
 	public List<Premission> listAll() {
-		// TODO Auto-generated method stub
 		return premissionMapper.listAll();
 	}
 
 	@Override
 	public List<Premission> selectFirstGeneration() {
 		return premissionMapper.selectFirstGeneration();
+	}
+
+	@Override
+	public List<Premission> selectPremissionByUserId(Integer id) {
+		return premissionMapper.selectPremissionByUserId(id);
 	}
 
 }

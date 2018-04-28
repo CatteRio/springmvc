@@ -21,6 +21,7 @@ public interface PremissionMapper {
 
 	List<Premission> selectFirstGeneration();
 	
+	List<Premission> selectPremissionByUserId(Integer id);
 	
 	List<Premission> selectChildren();
 }
