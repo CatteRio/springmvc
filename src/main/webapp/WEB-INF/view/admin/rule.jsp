@@ -5,8 +5,17 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>角色管理-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+<title>角色管理</title>
 <%@include file="../common/header.jsp"%>
+<style type="text/css">
+.ztree li span.button.add {
+	margin-left: 2px;
+	margin-right: -1px;
+	background-position: -144px 0;
+	vertical-align: top;
+	*vertical-align: middle
+}
+</style>
 </head>
 
 <body>
@@ -16,14 +25,17 @@
 			<fieldset class="layui-elem-field">
 				<legend>权限管理</legend>
 				<div class="layui-field-box">
-					<div class="my-layui-block">
+					<!-- <div class="my-layui-block">
 						<div id="laytree"></div>
+					</div> -->
+					<div class="my-layui-block">
+						<div id="ztree" class="ztree"></div>
 					</div>
 					<div class="my-layui-nodeview" v-show="showView">
 						<fieldset class="layui-elem-field layui-field-title">
 							<legend>当前节点-{{currentPremission.content}}</legend>
 							<div class="layui-field-box">
-								<div class="layui-form">
+								<!-- <div class="layui-form">
 									<input type="text" class="layui-hide" v-model="premission.id" />
 									<input type="text" class="layui-hide"
 										v-model="premission.parentid" />
@@ -60,7 +72,7 @@
 											<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</fieldset>
 
@@ -68,6 +80,48 @@
 				</div>
 			</fieldset>
 		</div>
+		<!-- 弹出层 -->
+		<div id="select" style="display: none">
+			<div id="selectbody" class="weadmin-body my-layui-nodeview">
+				<div class="layui-form">
+					<input type="text" class="layui-hide" v-model="premission.id" /> <input
+						type="text" class="layui-hide" v-model="premission.parentid" />
+					<div class="layui-form-item">
+						<label class="layui-form-label">名称</label>
+						<div class="layui-input-block">
+							<input type="text" placeholder="请输入名称" autocomplete="off"
+								v-model="premission.content" lay-verify="required"
+								class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">路径</label>
+						<div class="layui-input-block">
+							<input type="text" placeholder="请输入路径" autocomplete="off"
+								v-model="premission.path" lay-verify="required"
+								class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">备注</label>
+						<div class="layui-input-block">
+							<input type="text" placeholder="请输入备注" autocomplete="off"
+								v-model="premission.remark" class="layui-input">
+						</div>
+					</div>
+					<!-- <div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="addRule">新增</button>
+							<button class="layui-btn" lay-submit lay-filter="updateRule">修改</button>
+							<button class="layui-btn layui-btn-warm" lay-submit
+								lay-filter="deleteRule">删除</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div> -->
+				</div>
+			</div>
+		</div>
+
 	</div>
 	<script
 		src="${pageContext.request.contextPath}/static/js/admin/rule.js"></script>

@@ -5,10 +5,9 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>角色管理-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+<title>角色管理</title>
 <%@include file="../common/header.jsp"%>
 </head>
-
 <body>
 	<div id="vcontroller">
 		<!-- 查看角色 -->
@@ -155,8 +154,6 @@
 			</div>
 		</div>
 	</div>
-
-
 	<script
 		src="${pageContext.request.contextPath}/static/js/admin/role.js"></script>
 </body>
