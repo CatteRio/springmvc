@@ -24,4 +24,6 @@ public interface PremissionMapper {
 	List<Premission> selectPremissionByUserId(Integer id);
 	
 	List<Premission> selectChildren();
+	
+	Premission selectByContent(String content);
 }

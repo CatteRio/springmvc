@@ -65,4 +65,9 @@ public class PremissionService implements IPremissionService {
 		return premissionMapper.selectPremissionByUserId(id);
 	}
 
+	@Override
+	public Premission selectByContent(String content) {
+		return premissionMapper.selectByContent(content);
+	}
+
 }

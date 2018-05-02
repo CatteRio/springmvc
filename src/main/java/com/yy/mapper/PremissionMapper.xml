@@ -24,7 +24,8 @@
 	<select id="selectPremissionByUserId" parameterType="INTEGER"
 		resultType="Premission">
 		SELECT distinct p.*
-		from premission p,role_premission rp,user_role ur
+		from premission p,role_premission
+		rp,user_role ur
 		where p.id = rp.premissionid and rp.roleid = ur.roleid
 		and ur.userid = #{id}
 	</select>
@@ -129,5 +130,13 @@
 		select
 		<include refid="Base_Column_List" />
 		from premission
+	</select>
+
+	<select id="selectByContent" parameterType="java.lang.String"
+		resultType="Premission">
+		select
+		<include refid="Base_Column_List" />
+		from premission
+		where content= #{content}
 	</select>
 </mapper>

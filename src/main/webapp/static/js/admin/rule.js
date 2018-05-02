@@ -29,49 +29,46 @@ $(function() {
 			}
 		},
 		callback : {
-			beforeDrag : beforeDrag,
 			beforeEditName : beforeEditName,
-			beforeRemove : beforeRemove,
-			beforeRename : beforeRename
+			beforeRemove : beforeRemove
 		}
 	};
 	var zNodes = [];
-	var log, className = "dark";
-	function beforeDrag(treeId, treeNodes) {
-		return false;
-	}
 	function beforeEditName(treeId, treeNode) {
-		className = (className === "dark" ? "" : "dark");
-		var zTree = $.fn.zTree.getZTreeObj("ztree");
-		zTree.selectNode(treeNode);
-		setTimeout(function() {
-			if (confirm("进入节点 -- " + treeNode.name + " 的编辑状态吗？")) {
-				setTimeout(function() {
-					zTree.editName(treeNode);
-				}, 0);
-			}
-		}, 0);
+		vm.premission = treeNode;
+		layer.open({
+			type : 1,
+			title : "编辑节点",
+			area : [ '450px', '300px' ],
+			skin : 'layui-layer-rim', // 加上边框
+			content : $('#select'),
+			btn : [ '确定', '取消' ],
+			yes : function(index, layero) {
+				vm.updateRule();
+				treeNode.name = vm.premission.content;
+				treeNode.content = vm.premission.content;
+				treeNode.path = vm.premission.path;
+				treeNode.remark = vm.premission.remark
+				var zTree = $.fn.zTree.getZTreeObj("ztree");
+				zTree.updateNode(treeNode);
+				layer.close(index);
+			},
+			btn2 : function(index, layero) {
+			},
+			btnAlign : 'c'
+		});
 		return false;
 	}
 	function beforeRemove(treeId, treeNode) {
-		className = (className === "dark" ? "" : "dark");
 		var zTree = $.fn.zTree.getZTreeObj("ztree");
 		zTree.selectNode(treeNode);
-		return confirm("确认删除 节点 -- " + treeNode.name + " 吗？");
+		confirm("确认删除节点 :" + treeNode.name + " 吗？",function(){
+			vm.premission = treeNode;
+			vm.deleteRule();
+			zTree.removeNode(treeNode);
+		});
+		return false;
 	}
-	function beforeRename(treeId, treeNode, newName, isCancel) {
-		className = (className === "dark" ? "" : "dark");
-		if (newName.length == 0) {
-			setTimeout(function() {
-				var zTree = $.fn.zTree.getZTreeObj("ztree");
-				zTree.cancelEditName();
-				alert("节点名称不能为空.");
-			}, 0);
-			return false;
-		}
-		return true;
-	}
-	var newCount = 1;
 	function addHoverDom(treeId, treeNode) {
 		var sObj = $("#" + treeNode.tId + "_span");
 		if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0)
@@ -82,6 +79,7 @@ $(function() {
 		var btn = $("#addBtn_" + treeNode.tId);
 		if (btn)
 			btn.bind("click", function() {
+				vm.premission = {};
 				layer.open({
 					type : 1,
 					title : "增加节点",
@@ -91,12 +89,22 @@ $(function() {
 					btn : [ '确定', '取消' ],
 					yes : function(index, layero) {
 						vm.premission.parentid = treeNode.id;
-						vm.addRule();
-						var zTree = $.fn.zTree.getZTreeObj("ztree");
-						zTree.addNodes(treeNode, {
-							id : 100,
-							pId : treeNode.id,
-							name : vm.premission.content
+						vm.addRule(function(){
+							$.ajax({
+								type : "post",
+								url : baseApiPath + "/premission/list.do",
+								data : vm.premission,
+								success : function(data) {
+									var insertNode = data.data;
+									insertNode['name'] = insertNode['content'];
+									insertNode['pId'] = treeNode.id;
+									var zTree = $.fn.zTree.getZTreeObj("ztree");
+									zTree.addNodes(treeNode, insertNode);
+								},
+								error : function(jqXHR, textStatus, errorThrown) {
+									alert(JSON.parse(jqXHR.responseText).message);
+								}
+							});
 						});
 						layer.close(index);
 					},
@@ -115,8 +123,23 @@ $(function() {
 		zTree.setting.edit.editNameSelectAll = $("#selectAll").attr("checked");
 	}
 	$(document).ready(function() {
-		$.fn.zTree.init($("#ztree"), setting, zNodes);
-		$("#selectAll").bind("click", selectAll);
+		$.ajax({
+			type : "post",
+			url : baseApiPath + "/premission/all/list.do",
+			success : function(data) {
+				zNodes = data.data;
+				for (var i = 0; i < zNodes.length; i++) {
+					traverseTree(zNodes[i]);
+				}
+
+				$.fn.zTree.init($("#ztree"), setting, zNodes);
+				$("#selectAll").bind("click", selectAll);
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(JSON.parse(jqXHR.responseText).message);
+			}
+		});
+
 	});
 });
 layui.use([ 'form' ], function() {
@@ -175,15 +198,18 @@ var vm = new Vue({
 				}
 			});
 		},
-		addRule : function() {
-//			vm.premission.parentid = vm.premission.id;
-//			vm.premission.id = null;
+		addRule : function(callBack) {
+			// vm.premission.parentid = vm.premission.id;
+			// vm.premission.id = null;
 			$.ajax({
 				type : "post",
 				url : baseApiPath + "/premission/add.do",
 				data : vm.premission,
 				success : function(data) {
 					alert(data.message);
+					if(callBack){
+						callBack();
+					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert(JSON.parse(jqXHR.responseText).message);
@@ -243,10 +269,13 @@ function getNodes() {
 // 遍历单个节点
 function addNodeName(node) {
 	node['name'] = node['content'];
+	// if(selectedRoles.contains(node['name'])){
+	// node["checked"]=true;
+	// node["open"]=true
+	// }
 }
 
 // 递归遍历树
-// 作者：张超
 function traverseTree(node) {
 	if (!node) {
 		return;
@@ -257,5 +286,7 @@ function traverseTree(node) {
 		for (i = 0; i < node.children.length; i++) {
 			this.traverseTree(node.children[i]);
 		}
+	} else {
+		delete node.children;
 	}
 }

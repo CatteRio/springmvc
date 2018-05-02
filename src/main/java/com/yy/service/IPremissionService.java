@@ -23,7 +23,10 @@ public interface IPremissionService {
 	int updateByPrimaryKey(Premission record);
 
 	List<Premission> listAll();
+
 	List<Premission> selectFirstGeneration();
-	
+
 	List<Premission> selectPremissionByUserId(Integer id);
+
+	Premission selectByContent(String content);
 }

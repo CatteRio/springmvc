@@ -29,6 +29,11 @@ public class PremissionController {
 		return Reply.ok(premissionService.selectFirstGeneration());
 	}
 
+	@RequestMapping("/list.do")
+	public Reply getPremission(String content) {
+		return Reply.ok(premissionService.selectByContent(content));
+	}
+
 	@RequestMapping("/update.do")
 	public Reply update(Premission premission) {
 		premissionService.updateByPrimaryKey(premission);
@@ -42,13 +47,12 @@ public class PremissionController {
 		ShiroUtils.clearCachedAuthorizationInfo();
 		return Reply.ok("新增成功");
 	}
-	
-	
+
 	@RequestMapping("/delete.do")
 	public Reply delete(Premission premission) {
 		premissionService.deleteByPrimaryKey(premission.getId());
 		ShiroUtils.clearCachedAuthorizationInfo();
 		return Reply.ok("删除成功");
 	}
-	
+
 }
