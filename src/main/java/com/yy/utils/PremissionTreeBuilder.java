@@ -35,8 +35,7 @@ public class PremissionTreeBuilder {
 
 	/**
 	 * 使用递归方法建树
-	 * 
-	 * @param Premissions
+	 * @param premissions
 	 * @return
 	 */
 	public static List<Premission> buildByRecursive(List<Premission> premissions) {
@@ -51,8 +50,8 @@ public class PremissionTreeBuilder {
 
 	/**
 	 * 递归查找子节点
-	 * 
-	 * @param Premissions
+	 * @param premission
+	 * @param premissions
 	 * @return
 	 */
 	public static Premission findChildren(Premission premission, List<Premission> premissions) {

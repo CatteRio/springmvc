@@ -39,15 +39,15 @@ public class ShiroRealm extends AuthorizingRealm {
 		System.out.println("doGetAuthorizationInfo");
 		User user = (User) principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		List<Premission> premissions = premissionService.selectPremissionByUserId(user.getId());
+		List<Premission> permissions = premissionService.selectPremissionByUserId(user.getId());
 		for (Role role : user.getRoles()) {
 			info.addRole(role.getRole());
 		}
-		for (Premission premission : premissions) {
+		for (Premission premission : permissions) {
 			info.addStringPermission(premission.getContent());
 		}
 
-		user.setPremissions(PremissionTreeBuilder.buildByRecursive(premissions));
+		user.setPremissions(PremissionTreeBuilder.buildByRecursive(permissions));
 		// ShiroUtils.setSessionAttribute("premissions",
 		// PremissionTreeBuilder.buildByRecursive(premissions));
 		return info;
