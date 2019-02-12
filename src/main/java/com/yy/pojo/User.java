@@ -1,5 +1,6 @@
 package com.yy.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import lombok.Data;
  */
 @Component
 @Data
-public class User {
+public class User implements Serializable {
 	private int id;
 	private String username;
 	@JSONField(serialize=false)

@@ -1,6 +1,6 @@
 <%@page import="com.yy.utils.ShiroUtils"%>
 <%@page import="com.yy.utils.SpringContextUtils"%>
-<%@page import="com.yy.service.impl.PermissionService"%>
+<%@page import="com.yy.service.impl.PermissionServiceImpl"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.yy.pojo.Premission"%>
 <%@page import="java.util.List"%>

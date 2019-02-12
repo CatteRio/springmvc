@@ -1,5 +1,6 @@
 package com.yy.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
-public class Premission {
+public class Premission implements Serializable {
 	private Integer id;
 
 	private Integer parentid;

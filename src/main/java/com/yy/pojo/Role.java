@@ -1,5 +1,6 @@
 package com.yy.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.Data;
  * @date 2018-04-23 下午2:15:17
  */
 @Data
-public class Role {
+public class Role implements Serializable {
 	private Integer id;
 
 	private String role;

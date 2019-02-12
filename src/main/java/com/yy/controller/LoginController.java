@@ -1,18 +1,27 @@
 package com.yy.controller;
 
+import javax.jms.*;
 import javax.servlet.http.HttpSession;
 
+import com.yy.pojo.LoginLog;
+import com.yy.utils.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.yy.pojo.User;
 import com.yy.utils.Reply;
+
+import java.util.Date;
+
 /**
  * 
  * @author Rio(417168602@qq.com)
@@ -22,6 +31,10 @@ import com.yy.utils.Reply;
 @RequestMapping("/api")
 public class LoginController {
 
+	@Autowired
+	JmsTemplate jmsTemplate;
+	@Autowired
+	Destination loginTopic;
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	public Reply loginProcess(User user, String captcha, Model model, HttpSession session) {
 		String sessionCaptcha = (String) session.getAttribute("captcha");
@@ -44,6 +57,18 @@ public class LoginController {
 			ex.printStackTrace();
 			return Reply.error("内部错误，请重试！");
 		}
+		//发送消息到消息队列
+		jmsTemplate.send(loginTopic, new MessageCreator() {
+			@Override
+			public Message createMessage(Session session) throws JMSException {
+				LoginLog log =new LoginLog();
+				User currentUSer = ShiroUtils.getUser();
+				log.setUserId(currentUSer.getId());
+				log.setLoginTime(new Date());
+				ObjectMessage objectMessage = session.createObjectMessage(log);
+				return objectMessage;
+			}
+		});
 		return Reply.ok("登陆成功");
 	}
 

@@ -15,7 +15,7 @@ import com.yy.service.IPremissionService;
  * @date 2018-04-23 下午2:15:46
  */
 @Service
-public class PermissionService implements IPremissionService {
+public class PermissionServiceImpl implements IPremissionService {
 
 	@Autowired
 	private PremissionMapper premissionMapper;
