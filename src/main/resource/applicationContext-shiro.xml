@@ -45,9 +45,17 @@
 		class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="cacheManager" ref="cacheManager" />
 		<property name="realm" ref="myRealm" />
-		<property name="sessionMode" value="native">
-		</property>
+		<property name="sessionMode" value="native" />
+		<property name="rememberMeManager" ref="cookieRememberMeManager"/>
 
 	</bean>
-	
+
+	<bean class="org.apache.shiro.web.mgt.CookieRememberMeManager" id="cookieRememberMeManager">
+		<property name="cookie" ref="simpleCookie"/>
+	</bean>
+
+	<bean class="org.apache.shiro.web.servlet.SimpleCookie" id="simpleCookie">
+		<constructor-arg value="rememberMe"/>
+		<property name="maxAge" value="259200000"/>
+	</bean>
 </beans>  
