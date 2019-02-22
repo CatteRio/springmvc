@@ -9,66 +9,62 @@
                         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
                         http://www.springframework.org/schema/context  
                         http://www.springframework.org/schema/context/spring-context-4.3.xsd  
-                        http://www.springframework.org/schema/mvc  
-                        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
-                        http://www.springframework.org/schema/task  
+                        http://www.springframework.org/schema/task
 						http://www.springframework.org/schema/task/spring-task-4.3.xsd">
 
+    <context:property-placeholder location="classpath:dev.properties"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="com"/>
     <!-- mysql连接的基本配置，使用的是spring提供的 DriverManagerDataSource -->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName"
-                  value="com.mysql.jdbc.Driver"></property>
-        <property name="username" value="root"></property>
-        <property name="password" value="123456"></property>
-        <property name="url"
-                  value="jdbc:mysql://localhost:3306/custom?useUnicode=true&amp;characterEncoding=utf8"></property>
+        <property name="driverClassName" value="${driverClass}"/>
+        <property name="username" value="${user}"/>
+        <property name="password" value="${password}"/>
+        <property name="url" value="${jdbcUrl}"/>
     </bean>
     <bean id="sqlSessionFactory"
           class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"></property>
+        <property name="dataSource" ref="dataSource"/>
         <property name="configLocation">
             <value>classpath:mybaits-config.xml</value>
         </property>
         <!-- 别名包，等同于mybatis配置文件conf.xml中的typeAliases，简化映射文件.xml中类的引用 -->
-        <property name="typeAliasesPackage" value="com.yy.pojo"></property>
+        <property name="typeAliasesPackage" value="com.yy.pojo"/>
     </bean>
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!-- mapper接口扫描的包，即将此包下所有符合的mapper接口加载到SpringIOC容器管理 -->
-        <property name="basePackage" value="com.yy.mapper"></property>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+        <property name="basePackage" value="com.yy.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
     <!-- 添加事务 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"></property>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <task:annotation-driven scheduler="qbScheduler"
                             mode="proxy"/>
     <task:scheduler id="qbScheduler" pool-size="10"/>
-    <context:annotation-config/>
-    <bean
-            class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-    <context:component-scan base-package="com"/>
 
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
     <!-- jms支持 -->
 
     <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://127.0.0.1:61616"></property>
+        <property name="brokerURL" value="${brokerURL}"/>
         <property name="trustAllPackages" value="true"/>
     </bean>
     <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
-        <property name="targetConnectionFactory" ref="targetConnectionFactory"></property>
+        <property name="targetConnectionFactory" ref="targetConnectionFactory"/>
     </bean>
 
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="connectionFactory"></property>
+        <property name="connectionFactory" ref="connectionFactory"/>
     </bean>
     <!--消息队列-->
     <!-- 登陆主题队列 -->
-    <bean id = "loginTopic" class="org.apache.activemq.command.ActiveMQTopic">
+    <bean id="loginTopic" class="org.apache.activemq.command.ActiveMQTopic">
         <constructor-arg value="com.yy.jms.topic.login"/>
     </bean>
 
@@ -78,7 +74,7 @@
     <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="destination" ref="loginTopic"/>
-        <property name="messageListener" ref ="loginMessageListener"/>
+        <property name="messageListener" ref="loginMessageListener"/>
     </bean>
 
 
