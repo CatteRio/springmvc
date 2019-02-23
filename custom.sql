@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 本地
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50724
+ Source Server Version : 50720
  Source Host           : localhost:3306
  Source Schema         : custom
 
  Target Server Type    : MySQL
- Target Server Version : 50724
+ Target Server Version : 50720
  File Encoding         : 65001
 
- Date: 12/02/2019 15:36:39
+ Date: 23/02/2019 17:46:44
 */
 
 SET NAMES utf8mb4;
@@ -24,14 +24,22 @@ DROP TABLE IF EXISTS `login_log`;
 CREATE TABLE `login_log`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `login_time` datetime(0) NULL,
+  `login_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of login_log
 -- ----------------------------
 INSERT INTO `login_log` VALUES (1, 1, '2019-02-12 15:15:59');
+INSERT INTO `login_log` VALUES (2, 1, '2019-02-23 00:33:45');
+INSERT INTO `login_log` VALUES (3, 1, '2019-02-23 17:17:07');
+INSERT INTO `login_log` VALUES (4, 1, '2019-02-23 17:19:34');
+INSERT INTO `login_log` VALUES (5, 1, '2019-02-23 17:21:42');
+INSERT INTO `login_log` VALUES (6, 1, '2019-02-23 17:23:55');
+INSERT INTO `login_log` VALUES (7, 1, '2019-02-23 17:32:41');
+INSERT INTO `login_log` VALUES (8, 1, '2019-02-23 17:34:26');
+INSERT INTO `login_log` VALUES (9, 1, '2019-02-23 17:40:43');
 
 -- ----------------------------
 -- Table structure for permission
@@ -47,7 +55,7 @@ CREATE TABLE `permission`  (
   UNIQUE INDEX `content_UNIQUE`(`content`) USING BTREE,
   INDEX `fk_parent_idx`(`parentid`) USING BTREE,
   CONSTRAINT `fk_parent` FOREIGN KEY (`parentid`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permission
@@ -78,27 +86,31 @@ INSERT INTO `role` VALUES (2, '管理员', '管理员', 0);
 INSERT INTO `role` VALUES (7, '用户管理', '只能管理用户', 0);
 
 -- ----------------------------
--- Table structure for role_premission
+-- Table structure for role_permission
 -- ----------------------------
-DROP TABLE IF EXISTS `role_premission`;
-CREATE TABLE `role_premission`  (
+DROP TABLE IF EXISTS `role_permission`;
+CREATE TABLE `role_permission`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `roleid` int(11) NOT NULL,
-  `premissionid` int(11) NOT NULL,
+  `permissionid` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_role_idx`(`roleid`) USING BTREE,
-  INDEX `fk_premission_idx`(`premissionid`) USING BTREE,
-  CONSTRAINT `fk_premission` FOREIGN KEY (`premissionid`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  INDEX `fk_premission_idx`(`permissionid`) USING BTREE,
+  CONSTRAINT `fk_premission` FOREIGN KEY (`permissionid`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_role` FOREIGN KEY (`roleid`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of role_premission
+-- Records of role_permission
 -- ----------------------------
-INSERT INTO `role_premission` VALUES (1, 1, 1);
-INSERT INTO `role_premission` VALUES (2, 1, 2);
-INSERT INTO `role_premission` VALUES (3, 1, 3);
-INSERT INTO `role_premission` VALUES (4, 1, 4);
+INSERT INTO `role_permission` VALUES (1, 1, 1);
+INSERT INTO `role_permission` VALUES (2, 1, 2);
+INSERT INTO `role_permission` VALUES (3, 1, 3);
+INSERT INTO `role_permission` VALUES (4, 1, 4);
+INSERT INTO `role_permission` VALUES (5, 2, 1);
+INSERT INTO `role_permission` VALUES (6, 2, 4);
+INSERT INTO `role_permission` VALUES (7, 7, 1);
+INSERT INTO `role_permission` VALUES (8, 7, 2);
 
 -- ----------------------------
 -- Table structure for user
