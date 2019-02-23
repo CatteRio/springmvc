@@ -12,6 +12,6 @@ public class TaskCool {
 	// 每五秒执行一次
 //	@Scheduled(cron = "0/5 * * * * ?")
 //	public void testJob() {
-//		System.out.println("test first taskJob .... ");
+//		System.out.println("task first taskJob .... ");
 //	}
 }
