@@ -3,11 +3,11 @@ package com.yy.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yy.pojo.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yy.mapper.RoleMapper;
-import com.yy.pojo.Premission;
 import com.yy.pojo.Role;
 import com.yy.service.IRoleService;
 import com.yy.utils.PageInfo;
@@ -27,16 +27,16 @@ public class RoleServiceImpl implements IRoleService {
 	public int deleteByPrimaryKey(Integer id) {
 		List<Integer> roleIds = new ArrayList<>();
 		roleIds.add(id);
-		roleMapper.deleteRolePremissions(roleIds);
+		roleMapper.deleteRolePermissions(roleIds);
 		return roleMapper.deleteByPrimaryKey(id);
 	}
 
 	@Override
 	public int insert(Role record) {
-		List<Premission> premissions = record.getPremissions();
+		List<Permission> permissions = record.getPermissions();
 		int result = roleMapper.insert(record);
 		record = roleMapper.selectByRoleName(record.getRole());
-		roleMapper.saveRolePremission(premissions, record);
+		roleMapper.saveRolePermission(permissions, record);
 		return result;
 	}
 
@@ -60,8 +60,8 @@ public class RoleServiceImpl implements IRoleService {
 		int result = roleMapper.updateByPrimaryKey(record);
 		List<Integer> ids = new ArrayList<>();
 		ids.add(record.getId());
-		roleMapper.deleteRolePremissions(ids);
-		roleMapper.saveRolePremission(record.getPremissions(), record);
+		roleMapper.deleteRolePermissions(ids);
+		roleMapper.saveRolePermission(record.getPermissions(), record);
 		return result;
 	}
 
@@ -81,7 +81,7 @@ public class RoleServiceImpl implements IRoleService {
 		for (Role role : roleList) {
 			roleIds.add(role.getId());
 		}
-		roleMapper.deleteRolePremissions(roleIds);
+		roleMapper.deleteRolePermissions(roleIds);
 		roleMapper.deleteRoleList(roleList);
 	}
 

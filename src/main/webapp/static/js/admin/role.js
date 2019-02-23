@@ -32,19 +32,19 @@ var tableOption = {
 		field : 'remark',
 		title : '备注'
 	}, {
-		field : 'premissionid',
+		field : 'permissionid',
 		title : '权限',
 		templet : function(d) {
-			d = d.premissions;
-			var premissions = "";
+			d = d.permissions;
+			var permissions = "";
 			for (var i = 0; i < d.length; i++) {
-				premission = d[i];
-				premissions = premissions + premission.content;
+				permission = d[i];
+				permissions = permissions + permission.content;
 				if (i < d.length - 1) {
-					premissions = premissions + ",";
+					permissions = permissions + ",";
 				}
 			}
-			return premissions;
+			return permissions;
 		}
 	}, {
 		fixed : 'right',
@@ -86,23 +86,23 @@ layui.use('table', function() {
 				data : data,
 				success : function(data) {
 					var role = data.data;
-					var premissions = role.premissions;
-					var premissionNames = "";
-					var premissionadds = [];
-					for (var i = 0; i < premissions.length; i++) {
-						premission = premissions[i];
-						premissionNames = premissionNames + premission.content;
-						premissionadds.push(premission.id);
-						if (i < premissions.length - 1) {
-							premissionNames = premissionNames + ",";
+					var permissions = role.permissions;
+					var permissionNames = "";
+					var permissionadds = [];
+					for (var i = 0; i < permissions.length; i++) {
+						permission = permissions[i];
+						permissionNames = permissionNames + permission.content;
+						permissionadds.push(permission.id);
+						if (i < permissions.length - 1) {
+							permissionNames = permissionNames + ",";
 						}
 					}
 
-					$('#premission2').val(premissionNames);
+					$('#permission2').val(permissionNames);
 					vm.role.id = role.id;
 					vm.role.role = role.role;
 					vm.role.remark = role.remark;
-					vm.role.premissionadd = premissionadds;
+					vm.role.permissionadd = permissionadds;
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert(JSON.parse(jqXHR.responseText).message);
@@ -123,7 +123,7 @@ var vm = new Vue({
 		selectInput : "",
 		role : {
 			id : "",
-			premissionadd : [],
+			permissionadd : [],
 			role : "",
 			remark : ""
 		}
@@ -175,11 +175,11 @@ var vm = new Vue({
 			this.showList = false;
 			this.showEdit = true;
 		},
-		loadPremission : function(premission1, premission2) {
+		loadPermission : function(permission1, permission2) {
 			// console.log(role1,role2)
 			$.ajax({
 				type : "post",
-				url : baseApiPath + "/premission/all/list.do",
+				url : baseApiPath + "/permission/all/list.do",
 				success : function(data) {
 					var setting = {
 						check : {
@@ -192,7 +192,7 @@ var vm = new Vue({
 						}
 					};
 					var zNodes = data.data;
-					var selectedRoles = $('#'+premission1).val().split(",");
+					var selectedRoles = $('#'+permission1).val().split(",");
 					for ( var index in zNodes) {
 						traverseTree(zNodes[index],selectedRoles);
 					}
@@ -211,24 +211,24 @@ var vm = new Vue({
 						yes : function(index, layero) {
 							var zTreeOjb = $.fn.zTree.getZTreeObj("ztree");
 							var checkedNodes = zTreeOjb.getCheckedNodes();
-							var premissions = [];
-							var premissionids = [];
+							var permissions = [];
+							var permissionids = [];
 							for (i = 0; i < checkedNodes.length; i++) {
-								premissions.push(checkedNodes[i].name);
-								premissionids.push(checkedNodes[i].id);
+								permissions.push(checkedNodes[i].name);
+								permissionids.push(checkedNodes[i].id);
 							}
-							console.log(premissions);
-							console.log(premissionids);
-							var premissionVal = "";
-							for (var i = 0; i < premissions.length; i++) {
-								premissionVal = premissionVal + premissions[i];
-								if (i < premissions.length - 1) {
-									premissionVal = premissionVal + ",";
+							console.log(permissions);
+							console.log(permissionids);
+							var permissionVal = "";
+							for (var i = 0; i < permissions.length; i++) {
+								permissionVal = permissionVal + permissions[i];
+								if (i < permissions.length - 1) {
+									permissionVal = permissionVal + ",";
 								}
 							}
-							$('#' + premission1).val(premissionVal);
-							$('#' + premission2).val(premissionids);
-							vm.role.premissionadd = premissionids;
+							$('#' + permission1).val(permissionVal);
+							$('#' + permission2).val(permissionids);
+							vm.role.permissionadd = permissionids;
 							layer.close(index);
 						},
 						btn2 : function(index, layero) {
@@ -243,23 +243,23 @@ var vm = new Vue({
 				}
 			});
 
-			// alreadyRoles = $('#'+premission1).val().split(",")
-			// var premissions = data.data;
+			// alreadyRoles = $('#'+permission1).val().split(",")
+			// var permissions = data.data;
 			// var html = "";
-			// for(j = 0; j < premissions.length; j++) {
-			// var premission = premissions[j];
+			// for(j = 0; j < permissions.length; j++) {
+			// var permission = permissions[j];
 			// html = html + "<div class=\"layui-inline my-list-iteam\">\r\n";
 			// html = html + "<input type=\"checkbox\"
-			// premission=\""+premission.content+"\" class=\"chklist\"
-			// value=\""+premission.id+"\" ";
-			// if(alreadyRoles.contains(premission.content)){
+			// permission=\""+permission.content+"\" class=\"chklist\"
+			// value=\""+permission.id+"\" ";
+			// if(alreadyRoles.contains(permission.content)){
 			// html = html +"checked=\"checked\"";
 			// }
 			// html = html +"/>\r\n";
 			// html = html + "<label class=\"chkbox\"> \r\n"
 			// html = html + "<span class=\"check-image\"></span> \r\n"
 			// html = html + "<span
-			// class=\"radiobox-content\">"+premission.content+"</span> \r\n"
+			// class=\"radiobox-content\">"+permission.content+"</span> \r\n"
 			// html = html + "</label></div> \r\n"
 			// }
 			// $('#selectbody').html(html);
@@ -272,22 +272,22 @@ var vm = new Vue({
 			// content : $('#select'),
 			// btn : [ '确定', '取消' ],
 			// yes : function(index, layero) {
-			// var premissions = [];
-			// var premissionids = [];
+			// var permissions = [];
+			// var permissionids = [];
 			// $('#selectbody input:checked').each(function(){
-			// premissions.push($(this).attr('premission'));
-			// premissionids.push($(this).val());
+			// permissions.push($(this).attr('permission'));
+			// permissionids.push($(this).val());
 			// });
-			// var premissionVal="";
-			// for(var i=0;i<premissions.length;i++){
-			// premissionVal = premissionVal + premissions[i];
-			// if(i<premissions.length-1){
-			// premissionVal = premissionVal+",";
+			// var permissionVal="";
+			// for(var i=0;i<permissions.length;i++){
+			// permissionVal = permissionVal + permissions[i];
+			// if(i<permissions.length-1){
+			// permissionVal = permissionVal+",";
 			// }
 			// }
-			// $('#'+premission1).val(premissionVal);
-			// $('#'+premission2).val(premissionids);
-			// vm.role.premissionadd = premissionids;
+			// $('#'+permission1).val(permissionVal);
+			// $('#'+permission2).val(permissionids);
+			// vm.role.permissionadd = permissionids;
 			// layer.close(index);
 			// },
 			// btn2 : function(index, layero) {

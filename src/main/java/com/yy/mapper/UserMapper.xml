@@ -16,51 +16,12 @@
 			select="selectAllRoles"></collection>
 	</resultMap>
 
-	<!-- <resultMap id="Role" type="com.yy.pojo.Role">
-		<id column="id" jdbcType="INTEGER" property="id" />
-		<result column="role" jdbcType="VARCHAR" property="role" />
-		<result column="remark" jdbcType="VARCHAR" property="remark" />
-		<result column="status" jdbcType="TINYINT" property="status" />
-		<collection column="id" property="premissions" javaType="list"
-			select="selectAllPremission"></collection>
-	</resultMap>
-
-	<resultMap id="Premission" type="com.yy.pojo.Premission">
-		<id column="id" jdbcType="INTEGER" property="id" />
-		<result column="parentid" jdbcType="INTEGER" property="parentid" />
-		<result column="content" jdbcType="VARCHAR" property="content" />
-		<result column="path" jdbcType="VARCHAR" property="path" />
-		<result column="remark" jdbcType="VARCHAR" property="remark" />
-		<collection column="id" property="children" javaType="list"
-			select="selectChildren"></collection>
-	</resultMap> -->
-
-
 	<select id="selectAllRoles" parameterType="INTEGER" resultType="Role">
 		select id,role,remark
 		from role where id in (select user_role.roleid
 		from user_role where
 		user_role.userid=#{id})
 	</select>
-
-<!-- 	<select id="selectAllPremission" parameterType="INTEGER"
-		resultMap="Premission">
-		select id,content,remark
-		from premission where id in (select
-		role_premission.premissionid
-		from role_premission where
-		role_premission.roleid=#{id})
-	</select>
-
-	<select id="selectChildren" parameterType="INTEGER" resultMap="Premission">
-		select
-		id, parentid, content, path, remark
-		from premission where
-		parentid = #{id}
-	</select> -->
-
-
-
 
 	<!-- id必须和mapper接口对应的功能名称一致 ，此处只写save功能 -->
 	<insert id="save" parameterType="User">

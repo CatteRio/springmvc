@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yy.mapper.PermissionMapper">
+	<resultMap id="BaseResultMap" type="com.yy.pojo.Permission">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="parentid" jdbcType="INTEGER" property="parentid" />
+		<result column="content" jdbcType="VARCHAR" property="content" />
+		<result column="path" jdbcType="VARCHAR" property="path" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<collection column="id" property="children" javaType="list"
+					select="selectChildren"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, parentid, content, path, remark
+	</sql>
+
+	<select id="selectChildren" parameterType="INTEGER" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from permission where
+		parentid = #{id}
+	</select>
+
+	<select id="selectPermissionByUserId" parameterType="INTEGER"
+		resultType="Permission">
+		SELECT distinct p.*
+		from permission p,role_permission
+		rp,user_role ur
+		where p.id = rp.permissionid and rp.roleid = ur.roleid
+		and ur.userid = #{id}
+	</select>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from permission
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		permission
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.yy.pojo.Permission">
+		insert into permission (id,
+		parentid, content,
+		path, remark)
+		values (#{id,jdbcType=INTEGER},
+		#{parentid,jdbcType=INTEGER},
+		#{content,jdbcType=VARCHAR},
+		#{path,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.yy.pojo.Permission">
+		insert into permission
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="parentid != null">
+				parentid,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="path != null">
+				path,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="parentid != null">
+				#{parentid,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="path != null">
+				#{path,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yy.pojo.Permission">
+		update permission
+		<set>
+			<if test="parentid != null">
+				parentid = #{parentid,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="path != null">
+				path = #{path,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yy.pojo.Permission">
+		update permission
+		set parentid = #{parentid,jdbcType=INTEGER},
+		content =
+		#{content,jdbcType=VARCHAR},
+		path = #{path,jdbcType=VARCHAR},
+		remark =
+		#{remark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+
+	<select id="selectFirstGeneration" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from permission where parentid is null
+	</select>
+
+
+	<select id="listAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from permission
+	</select>
+
+	<select id="selectByContent" parameterType="java.lang.String"
+		resultType="Permission">
+		select
+		<include refid="Base_Column_List" />
+		from permission
+		where content= #{content}
+	</select>
+</mapper>

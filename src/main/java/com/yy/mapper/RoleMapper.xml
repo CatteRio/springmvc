@@ -6,20 +6,20 @@
 		<result column="role" jdbcType="VARCHAR" property="role" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="status" jdbcType="TINYINT" property="status" />
-		<collection column="id" property="premissions" javaType="list"
-			select="selectAllPremission"></collection>
+		<collection column="id" property="permissions" javaType="list"
+					select="selectAllPermission"/>
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, role, remark, status
 	</sql>
 
-	<select id="selectAllPremission" parameterType="INTEGER"
-		resultType="Premission">
+	<select id="selectAllPermission" parameterType="INTEGER"
+		resultType="Permission">
 		select id,content,remark
-		from premission where id in (select
-		role_premission.premissionid
-		from role_premission where
-		role_premission.roleid=#{id})
+		from permission where id in (select
+		role_permission.permissionid
+		from role_permission where
+		role_permission.roleid=#{id})
 	</select>
 
 
@@ -125,21 +125,21 @@
 			#{param.id}
 		</foreach>
 	</delete>
-	<delete id="deleteRolePremissions" parameterType="java.util.List">
-		delete from role_premission
-		where role_premission.roleid in
+	<delete id="deleteRolePermissions" parameterType="java.util.List">
+		delete from role_permission
+		where role_permission.roleid in
 		<foreach item="param" collection="list" open="(" close=")"
 			separator=",">
 			#{param}
 		</foreach>
 	</delete>
 
-	<insert id="saveRolePremission">
-		insert into role_premission(roleid,
-		premissionid)
+	<insert id="saveRolePermission">
+		insert into role_permission(roleid,
+		permissionid)
 		values
-		<foreach item="premission" collection="premissions" separator=",">
-			(#{role.id},#{premission.id})
+		<foreach item="permission" collection="permissions" separator=",">
+			(#{role.id},#{permission.id})
 		</foreach>
 	</insert>
 	<select id="selectByRoleName" resultMap="BaseResultMap">

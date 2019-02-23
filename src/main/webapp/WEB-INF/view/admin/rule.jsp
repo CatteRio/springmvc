@@ -33,17 +33,17 @@
 					</div>
 					<div class="my-layui-nodeview" v-show="showView">
 						<fieldset class="layui-elem-field layui-field-title">
-							<legend>当前节点-{{currentPremission.content}}</legend>
+							<legend>当前节点-{{currentPermission.content}}</legend>
 							<div class="layui-field-box">
 								<!-- <div class="layui-form">
-									<input type="text" class="layui-hide" v-model="premission.id" />
+									<input type="text" class="layui-hide" v-model="permission.id" />
 									<input type="text" class="layui-hide"
-										v-model="premission.parentid" />
+										v-model="permission.parentid" />
 									<div class="layui-form-item">
 										<label class="layui-form-label">名称</label>
 										<div class="layui-input-block">
 											<input type="text" placeholder="请输入名称" autocomplete="off"
-												v-model="premission.content" lay-verify="required"
+												v-model="permission.content" lay-verify="required"
 												class="layui-input">
 										</div>
 									</div>
@@ -51,7 +51,7 @@
 										<label class="layui-form-label">路径</label>
 										<div class="layui-input-block">
 											<input type="text" placeholder="请输入路径" autocomplete="off"
-												v-model="premission.path" lay-verify="required"
+												v-model="permission.path" lay-verify="required"
 												class="layui-input">
 										</div>
 									</div>
@@ -59,7 +59,7 @@
 										<label class="layui-form-label">备注</label>
 										<div class="layui-input-block">
 											<input type="text" placeholder="请输入备注" autocomplete="off"
-												v-model="premission.remark" class="layui-input">
+												v-model="permission.remark" class="layui-input">
 										</div>
 									</div>
 
@@ -84,13 +84,13 @@
 		<div id="select" style="display: none">
 			<div id="selectbody" class="weadmin-body my-layui-nodeview">
 				<div class="layui-form">
-					<input type="text" class="layui-hide" v-model="premission.id" /> <input
-						type="text" class="layui-hide" v-model="premission.parentid" />
+					<input type="text" class="layui-hide" v-model="permission.id" /> <input
+						type="text" class="layui-hide" v-model="permission.parentid" />
 					<div class="layui-form-item">
 						<label class="layui-form-label">名称</label>
 						<div class="layui-input-block">
 							<input type="text" placeholder="请输入名称" autocomplete="off"
-								v-model="premission.content" lay-verify="required"
+								v-model="permission.content" lay-verify="required"
 								class="layui-input">
 						</div>
 					</div>
@@ -98,7 +98,7 @@
 						<label class="layui-form-label">路径</label>
 						<div class="layui-input-block">
 							<input type="text" placeholder="请输入路径" autocomplete="off"
-								v-model="premission.path" lay-verify="required"
+								v-model="permission.path" lay-verify="required"
 								class="layui-input">
 						</div>
 					</div>
@@ -106,7 +106,7 @@
 						<label class="layui-form-label">备注</label>
 						<div class="layui-input-block">
 							<input type="text" placeholder="请输入备注" autocomplete="off"
-								v-model="premission.remark" class="layui-input">
+								v-model="permission.remark" class="layui-input">
 						</div>
 					</div>
 					<!-- <div class="layui-form-item">

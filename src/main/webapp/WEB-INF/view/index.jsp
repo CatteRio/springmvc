@@ -2,7 +2,7 @@
 <%@page import="com.yy.utils.SpringContextUtils"%>
 <%@page import="com.yy.service.impl.PermissionServiceImpl"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.yy.pojo.Premission"%>
+<%@page import="com.yy.pojo.Permission"%>
 <%@page import="java.util.List"%>
 <%@page import="com.yy.pojo.Role"%>
 <%@page import="com.yy.pojo.User"%>
@@ -75,8 +75,8 @@
 				<%--强行调用shiro方法获取用户信息--%>
 				<shiro:hasRole name=""></shiro:hasRole>
 				<%
-					List<Premission> premissions = ShiroUtils.getUser().getPremissions();
-					request.setAttribute("premissions", premissions);
+					List<Permission> permissions = ShiroUtils.getUser().getPermissions();
+					request.setAttribute("permissions", permissions);
 				%>
 				<jsp:include page="menu.jsp" />
 			</ul>

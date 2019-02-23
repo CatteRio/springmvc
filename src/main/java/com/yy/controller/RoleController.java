@@ -3,15 +3,13 @@ package com.yy.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import com.yy.pojo.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yy.pojo.Premission;
 import com.yy.pojo.Role;
 import com.yy.service.IRoleService;
 import com.yy.utils.PageInfo;
@@ -64,19 +62,19 @@ public class RoleController {
 	}
 
 	@RequestMapping("/add.do")
-	public Reply addRole(Role frontRole, @RequestParam(value = "premissionadd[0]") Integer[] premissionadd) {
+	public Reply addRole(Role frontRole, @RequestParam(value = "permissionadd[0]") Integer[] permissionadd) {
 		Role role = roleService.selectByRoleName(frontRole.getRole());
 		if (role != null) {
 			return Reply.error("角色名已存在");
 		}
-		List<Premission> premissionList = new ArrayList<>();
-		for (Integer premissionId : premissionadd) {
-			Premission premission = new Premission();
-			premission.setId(premissionId);
-			premissionList.add(premission);
+		List<Permission> permissionList = new ArrayList<>();
+		for (Integer permissionId : permissionadd) {
+			Permission permission = new Permission();
+			permission.setId(permissionId);
+			permissionList.add(permission);
 		}
 
-		frontRole.setPremissions(premissionList);
+		frontRole.setPermissions(permissionList);
 		roleService.insert(frontRole);
 		return Reply.ok("添加成功");
 	}
@@ -95,18 +93,18 @@ public class RoleController {
 	
 	
 	@RequestMapping("/update.do")
-	public Reply updateRole(Role role,@RequestParam(value = "premissionadd[]") Integer[] premissionadd) {
+	public Reply updateRole(Role role,@RequestParam(value = "permissionadd[]") Integer[] permissionadd) {
 		Role backRole = roleService.selectByRoleName(role.getRole());
 		if (backRole != null && backRole.getId() != role.getId()) {
 			return Reply.error("角色名已存在");
 		}
-		List<Premission> premisisonList = new ArrayList<>();
-		for (Integer premissionId: premissionadd) {
-			Premission premisison = new Premission();
-			premisison.setId(premissionId);
+		List<Permission> premisisonList = new ArrayList<>();
+		for (Integer permissionId: permissionadd) {
+			Permission premisison = new Permission();
+			premisison.setId(permissionId);
 			premisisonList.add(premisison);
 		}
-		role.setPremissions(premisisonList);
+		role.setPermissions(premisisonList);
 		
 		roleService.updateByPrimaryKey(role);
 		ShiroUtils.clearCachedAuthorizationInfo();

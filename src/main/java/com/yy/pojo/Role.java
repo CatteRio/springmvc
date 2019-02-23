@@ -21,5 +21,5 @@ public class Role implements Serializable {
 
 	private boolean checked;
 
-	private List<Premission> premissions;
+	private List<Permission> permissions;
 }

@@ -3,7 +3,7 @@ package com.yy.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.yy.pojo.Premission;
+import com.yy.pojo.Permission;
 
 /**
  * @author Rio(417168602@qq.com)
@@ -11,22 +11,22 @@ import com.yy.pojo.Premission;
  */
 public class PremissionTreeBuilder {
 
-	public static List<Premission> bulid(List<Premission> premissions) {
+	public static List<Permission> bulid(List<Permission> permissions) {
 
-		List<Premission> trees = new ArrayList<Premission>();
+		List<Permission> trees = new ArrayList<Permission>();
 
-		for (Premission premission : premissions) {
+		for (Permission permission : permissions) {
 
-			if (premission.getParentid() == null) {
-				trees.add(premission);
+			if (permission.getParentid() == null) {
+				trees.add(permission);
 			}
 
-			for (Premission it : premissions) {
-				if (it.getParentid() == premission.getId()) {
-					if (premission.getChildren() == null) {
-						premission.setChildren(new ArrayList<Premission>());
+			for (Permission it : permissions) {
+				if (it.getParentid() == permission.getId()) {
+					if (permission.getChildren() == null) {
+						permission.setChildren(new ArrayList<Permission>());
 					}
-					premission.getChildren().add(it);
+					permission.getChildren().add(it);
 				}
 			}
 		}
@@ -35,14 +35,14 @@ public class PremissionTreeBuilder {
 
 	/**
 	 * 使用递归方法建树
-	 * @param premissions
+	 * @param permissions
 	 * @return
 	 */
-	public static List<Premission> buildByRecursive(List<Premission> premissions) {
-		List<Premission> trees = new ArrayList<Premission>();
-		for (Premission premission : premissions) {
-			if (premission.getParentid() == null) {
-				trees.add(findChildren(premission, premissions));
+	public static List<Permission> buildByRecursive(List<Permission> permissions) {
+		List<Permission> trees = new ArrayList<Permission>();
+		for (Permission permission : permissions) {
+			if (permission.getParentid() == null) {
+				trees.add(findChildren(permission, permissions));
 			}
 		}
 		return trees;
@@ -50,20 +50,20 @@ public class PremissionTreeBuilder {
 
 	/**
 	 * 递归查找子节点
-	 * @param premission
-	 * @param premissions
+	 * @param permission
+	 * @param permissions
 	 * @return
 	 */
-	public static Premission findChildren(Premission premission, List<Premission> premissions) {
-		for (Premission it : premissions) {
-			if (premission.getId().equals(it.getParentid())) {
-				if (premission.getChildren() == null) {
-					premission.setChildren(new ArrayList<Premission>());
+	public static Permission findChildren(Permission permission, List<Permission> permissions) {
+		for (Permission it : permissions) {
+			if (permission.getId().equals(it.getParentid())) {
+				if (permission.getChildren() == null) {
+					permission.setChildren(new ArrayList<Permission>());
 				}
-				premission.getChildren().add(findChildren(it, premissions));
+				permission.getChildren().add(findChildren(it, permissions));
 			}
 		}
-		return premission;
+		return permission;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.yy.shiro;
 
 import java.util.List;
 
+import com.yy.pojo.Permission;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -14,10 +15,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.yy.pojo.Premission;
 import com.yy.pojo.Role;
 import com.yy.pojo.User;
-import com.yy.service.IPremissionService;
+import com.yy.service.IPermissionService;
 import com.yy.service.IUserService;
 import com.yy.utils.PremissionTreeBuilder;
 
@@ -32,24 +32,24 @@ public class ShiroRealm extends AuthorizingRealm {
 	private IUserService userService;
 
 	@Autowired
-	IPremissionService premissionService;
+    IPermissionService premissionService;
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		System.out.println("doGetAuthorizationInfo");
 		User user = (User) principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		List<Premission> permissions = premissionService.selectPremissionByUserId(user.getId());
+		List<Permission> permissions = premissionService.selectPermissionByUserId(user.getId());
 		for (Role role : user.getRoles()) {
 			info.addRole(role.getRole());
 		}
-		for (Premission premission : permissions) {
-			info.addStringPermission(premission.getContent());
+		for (Permission permission : permissions) {
+			info.addStringPermission(permission.getContent());
 		}
 
-		user.setPremissions(PremissionTreeBuilder.buildByRecursive(permissions));
-		// ShiroUtils.setSessionAttribute("premissions",
-		// PremissionTreeBuilder.buildByRecursive(premissions));
+		user.setPermissions(PremissionTreeBuilder.buildByRecursive(permissions));
+		// ShiroUtils.setSessionAttribute("permissions",
+		// PremissionTreeBuilder.buildByRecursive(permissions));
 		return info;
 	}
 

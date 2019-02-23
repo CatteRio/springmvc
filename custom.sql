@@ -34,10 +34,10 @@ CREATE TABLE `login_log`  (
 INSERT INTO `login_log` VALUES (1, 1, '2019-02-12 15:15:59');
 
 -- ----------------------------
--- Table structure for premission
+-- Table structure for permission
 -- ----------------------------
-DROP TABLE IF EXISTS `premission`;
-CREATE TABLE `premission`  (
+DROP TABLE IF EXISTS `permission`;
+CREATE TABLE `permission`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parentid` int(11) NULL DEFAULT NULL,
   `content` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -46,16 +46,16 @@ CREATE TABLE `premission`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `content_UNIQUE`(`content`) USING BTREE,
   INDEX `fk_parent_idx`(`parentid`) USING BTREE,
-  CONSTRAINT `fk_parent` FOREIGN KEY (`parentid`) REFERENCES `premission` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_parent` FOREIGN KEY (`parentid`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of premission
+-- Records of permission
 -- ----------------------------
-INSERT INTO `premission` VALUES (1, NULL, '管理员管理', '1', '管理员管理');
-INSERT INTO `premission` VALUES (2, 1, '用户管理', '/admin/user.do', NULL);
-INSERT INTO `premission` VALUES (3, 1, '角色管理', '/admin/role.do', NULL);
-INSERT INTO `premission` VALUES (4, 1, '权限管理', '/admin/rule.do', NULL);
+INSERT INTO `permission` VALUES (1, NULL, '管理员管理', '1', '管理员管理');
+INSERT INTO `permission` VALUES (2, 1, '用户管理', '/admin/user.do', NULL);
+INSERT INTO `permission` VALUES (3, 1, '角色管理', '/admin/role.do', NULL);
+INSERT INTO `permission` VALUES (4, 1, '权限管理', '/admin/rule.do', NULL);
 
 -- ----------------------------
 -- Table structure for role
@@ -88,7 +88,7 @@ CREATE TABLE `role_premission`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_role_idx`(`roleid`) USING BTREE,
   INDEX `fk_premission_idx`(`premissionid`) USING BTREE,
-  CONSTRAINT `fk_premission` FOREIGN KEY (`premissionid`) REFERENCES `premission` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_premission` FOREIGN KEY (`premissionid`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_role` FOREIGN KEY (`roleid`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

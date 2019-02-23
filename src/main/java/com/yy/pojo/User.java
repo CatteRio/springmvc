@@ -27,5 +27,5 @@ public class User implements Serializable {
 	private String salt;
 	private List<Role> roles;
 	@JSONField(serialize=false)
-	private List<Premission> premissions;
+	private List<Permission> permissions;
 }

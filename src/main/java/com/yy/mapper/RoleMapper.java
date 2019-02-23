@@ -2,9 +2,9 @@ package com.yy.mapper;
 
 import java.util.List;
 
+import com.yy.pojo.Permission;
 import org.apache.ibatis.annotations.Param;
 
-import com.yy.pojo.Premission;
 import com.yy.pojo.Role;
 import com.yy.utils.PageInfo;
 
@@ -23,15 +23,15 @@ public interface RoleMapper {
 
 	List<Role> selectAll();
 
-	List<Premission> selectAllPremission(Integer id);
+	List<Permission> selectAllPermission(Integer id);
 
 	List<Role> getRoleListByLimit(@Param("page") PageInfo page, @Param("role") String role);
 
 	void deleteRoleList(List<Role> roleList);
 
-	void deleteRolePremissions(List<Integer> roleIds);
+	void deleteRolePermissions(List<Integer> roleIds);
 
-	void saveRolePremission(@Param("premissions") List<Premission> premissions, @Param("role") Role role);
+	void saveRolePermission(@Param("permissions") List<Permission> permissions, @Param("role") Role role);
 	
 	Role selectByRoleName(String role);
 

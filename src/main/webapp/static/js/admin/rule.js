@@ -2,8 +2,8 @@
 //	elem : '#laytree',
 //	nodes : getNodes(),
 //	click : function(node) {
-//		vm.loadPremission(node);
-//		vm.currentPremission = cloneObj(vm.premission);
+//		vm.loadpermission(node);
+//		vm.currentpermission = cloneObj(vm.permission);
 //		vm.showView = true; // node即为当前点击的节点数据
 //	}
 //};
@@ -35,7 +35,7 @@ $(function() {
 	};
 	var zNodes = [];
 	function beforeEditName(treeId, treeNode) {
-		vm.premission = treeNode;
+		vm.permission = treeNode;
 		layer.open({
 			type : 1,
 			title : "编辑节点",
@@ -45,10 +45,10 @@ $(function() {
 			btn : [ '确定', '取消' ],
 			yes : function(index, layero) {
 				vm.updateRule();
-				treeNode.name = vm.premission.content;
-				treeNode.content = vm.premission.content;
-				treeNode.path = vm.premission.path;
-				treeNode.remark = vm.premission.remark
+				treeNode.name = vm.permission.content;
+				treeNode.content = vm.permission.content;
+				treeNode.path = vm.permission.path;
+				treeNode.remark = vm.permission.remark
 				var zTree = $.fn.zTree.getZTreeObj("ztree");
 				zTree.updateNode(treeNode);
 				layer.close(index);
@@ -63,7 +63,7 @@ $(function() {
 		var zTree = $.fn.zTree.getZTreeObj("ztree");
 		zTree.selectNode(treeNode);
 		confirm("确认删除节点 :" + treeNode.name + " 吗？",function(){
-			vm.premission = treeNode;
+			vm.permission = treeNode;
 			vm.deleteRule();
 			zTree.removeNode(treeNode);
 		});
@@ -79,7 +79,7 @@ $(function() {
 		var btn = $("#addBtn_" + treeNode.tId);
 		if (btn)
 			btn.bind("click", function() {
-				vm.premission = {};
+				vm.permission = {};
 				layer.open({
 					type : 1,
 					title : "增加节点",
@@ -88,12 +88,12 @@ $(function() {
 					content : $('#select'),
 					btn : [ '确定', '取消' ],
 					yes : function(index, layero) {
-						vm.premission.parentid = treeNode.id;
+						vm.permission.parentid = treeNode.id;
 						vm.addRule(function(){
 							$.ajax({
 								type : "post",
-								url : baseApiPath + "/premission/list.do",
-								data : vm.premission,
+								url : baseApiPath + "/permission/list.do",
+								data : vm.permission,
 								success : function(data) {
 									var insertNode = data.data;
 									insertNode['name'] = insertNode['content'];
@@ -125,7 +125,7 @@ $(function() {
 	$(document).ready(function() {
 		$.ajax({
 			type : "post",
-			url : baseApiPath + "/premission/all/list.do",
+			url : baseApiPath + "/permission/all/list.do",
 			success : function(data) {
 				zNodes = data.data;
 				for (var i = 0; i < zNodes.length; i++) {
@@ -166,11 +166,11 @@ layui.use([ 'form' ], function() {
 var vm = new Vue({
 	el : '#vcontroller',
 	data : {
-		currentPremission : {
+		currentPermission : {
 
 		},
 		showView : false,
-		premission : {
+		permission : {
 			id : "",
 			parentid : "",
 			content : "",
@@ -179,19 +179,19 @@ var vm = new Vue({
 		}
 	},
 	methods : {
-		loadPremission : function(node) {
+		loadPermission : function(node) {
 			$.ajax({
 				type : "post",
-				url : baseApiPath + "/premission/all/list.do",
+				url : baseApiPath + "/permission/all/list.do",
 				data : node,
 				async : false,
 				success : function(data) {
-					var premission = data.data;
-					vm.premission.id = premission.id;
-					vm.premission.parentid = premission.parentid;
-					vm.premission.content = premission.content;
-					vm.premission.path = premission.path;
-					vm.premission.remark = premission.remark;
+					var permission = data.data;
+					vm.permission.id = permission.id;
+					vm.permission.parentid = permission.parentid;
+					vm.permission.content = permission.content;
+					vm.permission.path = permission.path;
+					vm.permission.remark = permission.remark;
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert(JSON.parse(jqXHR.responseText).message);
@@ -199,12 +199,12 @@ var vm = new Vue({
 			});
 		},
 		addRule : function(callBack) {
-			// vm.premission.parentid = vm.premission.id;
-			// vm.premission.id = null;
+			// vm.permission.parentid = vm.permission.id;
+			// vm.permission.id = null;
 			$.ajax({
 				type : "post",
-				url : baseApiPath + "/premission/add.do",
-				data : vm.premission,
+				url : baseApiPath + "/permission/add.do",
+				data : vm.permission,
 				success : function(data) {
 					alert(data.message);
 					if(callBack){
@@ -219,8 +219,8 @@ var vm = new Vue({
 		updateRule : function() {
 			$.ajax({
 				type : "post",
-				url : baseApiPath + "/premission/update.do",
-				data : vm.premission,
+				url : baseApiPath + "/permission/update.do",
+				data : vm.permission,
 				success : function(data) {
 					alert(data.message);
 				},
@@ -232,8 +232,8 @@ var vm = new Vue({
 		deleteRule : function() {
 			$.ajax({
 				type : "post",
-				url : baseApiPath + "/premission/delete.do",
-				data : vm.premission,
+				url : baseApiPath + "/permission/delete.do",
+				data : vm.permission,
 				success : function(data) {
 					alert(data.message);
 				},
@@ -249,7 +249,7 @@ function getNodes() {
 	var nodes;
 	$.ajax({
 		type : "post",
-		url : baseApiPath + "/premission/all/list.do",
+		url : baseApiPath + "/permission/all/list.do",
 		async : false,
 		success : function(data) {
 			nodes = data.data;

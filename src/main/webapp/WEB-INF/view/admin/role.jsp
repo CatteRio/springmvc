@@ -71,12 +71,12 @@
 						</div>
 
 						<div class="layui-form-item">
-							<label for="premission" class="layui-form-label"> <span
+							<label for="permission" class="layui-form-label"> <span
 								class="we-red">*</span>权限
 							</label>
 							<div class="layui-input-inline">
-								<input type="text" id="premission" required=""
-									@focus="loadPremission('premission','premissionids')"
+								<input type="text" id="permission" required=""
+									@focus="loadPermission('permission','permissionids')"
 									lay-verify="required" autocomplete="off" class="layui-input"
 									readonly="readonly">
 							</div>
@@ -86,7 +86,7 @@
 						</div>
 
 						<div class="layui-form-item layui-hide">
-							<input type="text" id="premissionids" name="premissionadd[0]"
+							<input type="text" id="permissionids" name="permissionadd[0]"
 								class="layui-input" readonly="readonly">
 						</div>
 						<div class="layui-form-item">
@@ -125,16 +125,16 @@
 						<div class="layui-form-item">
 							<label for="role" class="layui-form-label">权限 </label>
 							<div class="layui-input-inline">
-								<input type="text" id="premission2" required=""
-									@focus="loadPremission('premission2','premissionids2')"
+								<input type="text" id="permission2" required=""
+									@focus="loadPermission('permission2','permissionids2')"
 									lay-verify="required" autocomplete="off" class="layui-input"
 									readonly="readonly">
 							</div>
 						</div>
 
 						<div class="layui-form-item layui-hide">
-							<input type="text" id="premissionids2"
-								v-model="role.premissionadd[0]" class="layui-input"
+							<input type="text" id="permissionids2"
+								v-model="role.permissionadd[0]" class="layui-input"
 								readonly="readonly">
 						</div>
 						<div class="layui-form-item">
